@@ -1,0 +1,58 @@
+@charset "ISO-8859-1";
+
+form.example input[type=text] {
+	padding: 10px;
+	font-size: 17px;
+	border: 1px solid grey;
+	float: left;
+	width: 80%;
+	background: #f1f1f1;
+}
+
+form.example button {
+	float: left;
+	width: 20%;
+	padding: 10px;
+	background: #2196F3;
+	color: white;
+	font-size: 17px;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer;
+}
+
+form.example button:hover {
+	background: #0b7dda;
+}
+
+form.example::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+/* Mobile & tablet  */
+@media ( max-width : 1023px) {
+}
+
+/* tablet */
+@media ( min-width : 740px) and (max-width: 1023px) {
+	.owl-item {
+		width: 396px;
+		padding: 16px 0;
+	}
+	.card:hover .hover-icon {
+		display: none;
+	}
+}
+
+/* mobile */
+@media ( max-width : 739px) {
+	.owl-item {
+		float: unset;
+		padding: 16px 0;
+	}
+	.card:hover .hover-icon {
+		display: none;
+	}
+}
