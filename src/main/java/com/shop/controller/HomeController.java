@@ -19,17 +19,22 @@ public class HomeController {
 	private ItemService itemService;
 
 	@GetMapping("/")
-	public String home(@RequestParam(name = "page", required = false) Integer page, Model model) {
+	public String home(@RequestParam(name = "page", required = false) Integer page,
+						@RequestParam(name = "sort", required = false) String sort, 
+						Model model) {
 		
 //		List<Item> items = itemService.getAll(Item.class);
 		if(page == null) {
 			page = 0;
 		}
-		List<Item> items = itemService.getItemsInPage(page);
+		List<Item> items = itemService.getItemsInPage(sort, page);
 		List<ItemGroup> itemGroups = itemService.getAll(ItemGroup.class);
+		int sizePage = itemService.getSizePage("", "", "", "", 0, sort, "");
 		System.out.println(items.size() + " ==== " + itemGroups.size());
 		model.addAttribute("items", items);
 		model.addAttribute("itemGroups", itemGroups);
+		model.addAttribute("sizePage", sizePage);
+		model.addAttribute("page", page);
 		return "home";
 	}
 	
@@ -38,6 +43,7 @@ public class HomeController {
 			@RequestParam(name = "price", required = false) String price,
 			@RequestParam(name = "itemGroup", required = false) String itemGroup,
 			@RequestParam(name = "search", required = false) String search,
+			@RequestParam(name = "sort", required = false) String sort,
 			Model model) {
 		System.out.println("itemGroup = " + itemGroup);
 		
@@ -56,12 +62,15 @@ public class HomeController {
 			page = 0;
 		}
 		
-		List<Item> items = itemService.getSearchedItems(from, to, itemGroup, search, page);
+		List<Item> items = itemService.getSearchedItems(from, to, itemGroup, search, sort, page);
 		System.out.println("SIZE = " + items.size());
 		List<ItemGroup> itemGroups = itemService.getAll(ItemGroup.class);
+		int sizePage = itemService.getSizePage(from, to, itemGroup, search, page, sort, "search");
 		System.out.println(items.size() + " ==== " + itemGroups.size());
 		model.addAttribute("items", items);
 		model.addAttribute("itemGroups", itemGroups);
+		model.addAttribute("sizePage", sizePage);
+		model.addAttribute("page", page);
 		return "home";
 	}
 	

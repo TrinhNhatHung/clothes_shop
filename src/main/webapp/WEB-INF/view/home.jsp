@@ -80,13 +80,10 @@
 								<label for="">Sắp xếp theo:</label>
 								<div class="dropdown">
 									<button type="button" class="btn btn-dark dropdown-toggle"
-										data-toggle="dropdown" aria-expanded="false">Sản phẩm
-										nổi bật</button>
+										data-toggle="dropdown">Giá</button>
 									<div class="dropdown-menu">
 										<a class="dropdown-item" id="sort1">Giá: Tăng dần</a> <a
-											class="dropdown-item" id="sort2">Giá: giảm dần</a> <a
-											class="dropdown-item" id="sort6">Mới nhất</a> <a
-											class="dropdown-item" id="sort7">Bán chạy nhất</a>
+											class="dropdown-item" id="sort2">Giá: Giảm dần</a>
 									</div>
 								</div>
 							</div>
@@ -146,76 +143,15 @@
 						</c:forEach>
 					</div>
 
-
-
-
+					<!-- pagination -->
 					<div class="loadmore">
-						<a style="cursor: pointer;" class="loadmore-btn">Tải thêm</a>
+						<%@ include file="pagination.jsp"%>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<%-- <div class="container">
-		<!-- end slide show -->
-		<div class="product">
-			<div class="container">
-				<div class="product__new">
-					<h3 class="product__ne title-product">Sản phẩm mới</h3>
-					<div class="row">
-
-						<c:forEach var="item" items="${items}">
-
-							<div class="col-lg-3 col-md-6 col-sm-12 mb-20">
-								<a href="./ProductDetail.html" class="product__new-item">
-									<div class="card" style="width: 100%">
-										<div>
-											<img class="card-img-top"
-												src="${contextPath}/resources/assets/img/product/${item.image}.jpg"
-												alt="Card image cap">
-											<form action="" class="hover-icon hidden-sm hidden-xs">
-												<input type="hidden"> <a href="./pay.html"
-													class="btn-add-to-cart" title="Mua ngay"> <i
-													class="fas fa-cart-plus"></i>
-												</a> <a data-toggle="modal" data-target="#myModal"
-													class="quickview" title="Xem nhanh"> <i
-													class="fas fa-search"></i>
-												</a>
-											</form>
-										</div>
-										<div class="card-body">
-											<h5 class="card-title custom__name-product">${item.name}</h5>
-											<div class="product__price">
-												<p class="card-text price-color product__price-old">
-													${item.outPrice}đ</p>
-												<p class="card-text price-color product__price-new">
-													<script type="text/javascript">
-														var newOutPrice = ${item.outPrice} * (100 - ${item.discount}) / 100;
-														document.write(newOutPrice)
-													</script>
-													đ
-												</p>
-											</div>
-
-											<div class="sale-off">
-												<span class="sale-off-percent">${item.discount}%</span> <span
-													class="sale-off-label">GIẢM</span>
-											</div>
-										</div>
-									</div>
-								</a>
-							</div>
-						</c:forEach>
-
-
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> --%>
-
+	<h1>${sizePage}</h1>
 	<!-- FOOTER -->
 	<%@ include file="footer.jsp"%>
 
@@ -281,8 +217,20 @@
 				+ itemGroup)
 		window.location = path + '/search?price=' + price + '&itemGroup='
 				+ itemGroup + '&search=' + search;
+		
 
 	}
+	
+	var url_string = window.location.href
+	var urlAsc = new URL(url_string);
+	var urlDesc = new URL(url_string);
+	urlAsc.searchParams.set("sort", "asc");
+	urlDesc.searchParams.set("sort", "desc");
+	
+	console.log(urlAsc + " =+= " + urlDesc)
+	document.getElementById("sort1").href = urlAsc;
+	document.getElementById("sort2").href = urlDesc;
+	
 </script>
 
 </html>

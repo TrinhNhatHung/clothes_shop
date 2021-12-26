@@ -16,13 +16,23 @@ public class ItemService extends EntityService{
 	private ItemDao itemDao;
 
 	@Transactional
-	public List<Item> getItemsInPage(Integer page) {
-		return itemDao.getItemsInPage(page);
+	public List<Item> getItemsInPage(String sort, Integer page) {
+		return itemDao.getItemsInPage(sort, page);
 	}
 
 	@Transactional
-	public List<Item> getSearchedItems(String from, String to, String itemGroup, String search, Integer page) {
-		return itemDao.getResearchedItems(from, to, itemGroup, search, page);
+	public List<Item> getSearchedItems(String from, String to, String itemGroup, String search, String sort, Integer page) {
+		return itemDao.getResearchedItems(from, to, itemGroup, search, sort, page);
+	}
+
+	@Transactional
+	public int getSizePage(String from, String to, String itemGroup, String search, Integer page, String sort, String pageIn) {
+		int size = itemDao.getSizePage(from, to, itemGroup, search, page, sort, pageIn);
+		int n = size / 6;
+		if(size % 6 > 0) {
+			n = n + 1;
+		}
+		return n;
 	}
 	
 }
