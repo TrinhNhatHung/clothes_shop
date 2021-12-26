@@ -2,11 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/taglib/import.jsp"%>
 <%@ page isELIgnored="false"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>MU Shop</title>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
