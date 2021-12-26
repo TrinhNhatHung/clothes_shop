@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class EntityDao<E> {
@@ -31,12 +32,14 @@ public class EntityDao<E> {
 	public List<E> getAll(Class<E> clazz) {
 		return openSession().createCriteria(clazz).list();
 	}
-
+	
+	@Transactional
 	public void delete(E e) {
 		Session session = getCurrentSession();
 		session.delete(e);
 	}
-
+	
+	@Transactional
 	public void insertOrUpdate(E e) {
 		Session session = getCurrentSession();
 		session.saveOrUpdate(e);
