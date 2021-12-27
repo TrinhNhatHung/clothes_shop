@@ -109,7 +109,7 @@
 									<div class="card" style="width: 100%">
 										<div>
 											<img class="card-img-top"
-												src="${contextPath}/resources/assets/img/product/${item.image}.jpg"
+												src="${item.linkImage}"
 												alt="Card image cap">
 											<form action="" class="hover-icon hidden-sm hidden-xs">
 												<input type="hidden"> <a href="./pay.html"
@@ -228,7 +228,6 @@
 	urlAsc.searchParams.set("sort", "asc");
 	urlDesc.searchParams.set("sort", "desc");
 	
-	console.log(urlAsc + " =+= " + urlDesc)
 	document.getElementById("sort1").href = urlAsc;
 	document.getElementById("sort2").href = urlDesc;
 	

@@ -80,9 +80,9 @@
 					</div>
 					<div class="col-6 login_link">
 						<ul class="header_link right m-auto">
-							<li><a href="./Login.html"><i
+							<li><a href="${pageContext.request.contextPath}/login"><i
 									class="fas fa-sign-in-alt mr-3"></i>Đăng nhập</a></li>
-							<li><a href="./registration.html"><i
+							<li><a href="${pageContext.request.contextPath}/signup"><i
 									class="fas fa-user-plus mr-3" style="margin-left: 10px;"></i>Đăng
 									kí</a></li>
 						</ul>

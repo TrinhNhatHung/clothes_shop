@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="/WEB-INF/taglib/import.jsp"%>
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
@@ -111,11 +110,12 @@ form.example::after {
 }
 </style>
 <body>
+	<%@ include file="header.jsp"%>
 	<div class="container">
 		<div class="login__form">
 			<div class="row">
 				<div class="col-sm-12 col-lg-6">
-					<form:form action="${pageContext.request.contextPath}/authenticate"
+					<form:form action="${contextPath}/authenticate"
 							   method="POST" class="form" id="form-2"
 					>
 						<h3 class="heading">ĐĂNG NHẬP</h3>
@@ -158,7 +158,7 @@ form.example::after {
 						<li class="text-login-item"><i class="fas fa-check"></i>
 							<p class="text-login">Các sự kiện sắp tới</p></li>
 					</ul>
-					<a href="${pageContext.request.contextPath}/signup"><button
+					<a href="${contextPath}/signup"><button
 							class="form-submit btn-blocker custom-btn"
 							style="border-radius: unset; margin: unset">
 							ĐĂNG KÍ <i class="fas fa-arrow-right"

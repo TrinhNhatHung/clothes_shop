@@ -8,39 +8,43 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "mathang")
 public class Item {
-	
+
 	@Id
 	@Column(name = "ma_mh")
 	private Integer id;
-	
+
 	@Column(name = "tenmathang")
 	private String name;
-	
+
 	@Column(name = "giaban")
 	private Integer outPrice;
-	
+
 	@Column(name = "giamua")
 	private Integer inPrice;
-	
+
 	@Column(name = "mota")
 	private String description;
-	
+
 	@Column(name = "giamgia")
 	private Integer discount;
-	
+
 	@Column(name = "hinhanh")
 	private String image;
-	
+
+	@Transient
+	private String linkImage;
+
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ma_loai", referencedColumnName = "ma_loai")
 	private ItemGroup itemGroup;
-	
+
 	public Item() {
-		
+
 	}
 
 	public Item(Integer id, String name, Integer outPrice, Integer inPrice, String description, Integer discount,
@@ -120,12 +124,19 @@ public class Item {
 		this.itemGroup = itemGroup;
 	}
 
+	public String getLinkImage() {
+		return linkImage;
+	}
+
+	public void setLinkImage(String linkImage) {
+		this.linkImage = linkImage;
+	}
+
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", outPrice=" + outPrice + ", inPrice=" + inPrice
 				+ ", description=" + description + ", discount=" + discount + ", image=" + image + ", itemGroup="
 				+ itemGroup + "]";
 	}
-	
-}
 
+}

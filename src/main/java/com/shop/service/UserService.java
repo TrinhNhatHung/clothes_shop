@@ -28,11 +28,11 @@ public class UserService implements UserDetailsService {
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
 				Arrays.asList(new SimpleGrantedAuthority(user.getRole().getName())));
 	}
-
+	
 	public User findByUsername(String username) {
 		return userDao.getById(User.class, username);
 	}
-
+	
 	public void insertOrUpdate(User user) {
 		userDao.insertOrUpdate(user);
 	}

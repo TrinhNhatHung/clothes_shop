@@ -22,12 +22,11 @@ public class HomeController {
 	public String home(@RequestParam(name = "page", required = false) Integer page,
 			@RequestParam(name = "sort", required = false) String sort, Model model) {
 
-//		List<Item> items = itemService.getAll(Item.class);
 		if (page == null) {
 			page = 0;
 		}
 		List<Item> items = itemService.getItemsInPage(sort, page);
-		List<ItemGroup> itemGroups = itemService.getAll(ItemGroup.class);
+		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
 		int sizePage = itemService.getSizePage("", "", "", "", 0, sort, "");
 		System.out.println(items.size() + " ==== " + itemGroups.size());
 		model.addAttribute("items", items);
@@ -62,7 +61,7 @@ public class HomeController {
 
 		List<Item> items = itemService.getSearchedItems(from, to, itemGroup, search, sort, page);
 		System.out.println("SIZE = " + items.size());
-		List<ItemGroup> itemGroups = itemService.getAll(ItemGroup.class);
+		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
 		int sizePage = itemService.getSizePage(from, to, itemGroup, search, page, sort, "search");
 		System.out.println(items.size() + " ==== " + itemGroups.size());
 		model.addAttribute("items", items);
