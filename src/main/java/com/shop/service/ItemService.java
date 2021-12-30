@@ -11,6 +11,7 @@ import com.shop.dao.ItemDao;
 import com.shop.dao.ItemGroupDao;
 import com.shop.entity.Item;
 import com.shop.entity.ItemGroup;
+import com.shop.entity.Size;
 import com.shop.util.FirebaseUtil;
 
 @Service
@@ -57,6 +58,17 @@ public class ItemService {
 			n = n + 1;
 		}
 		return n;
+	}
+
+	@Transactional
+	public Item getById(int id) {
+		Item item = itemDao.getById(Item.class, id);
+		item.setLinkImage(firebaseUtil.getFileUrl(item.getImage()));
+		return item;
+	}
+
+	public List<Size> getSizes(int id) {
+		return itemDao.getSizes(id);
 	}
 
 }

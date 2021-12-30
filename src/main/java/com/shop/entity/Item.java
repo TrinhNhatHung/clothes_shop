@@ -1,12 +1,17 @@
 package com.shop.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -43,6 +48,20 @@ public class Item {
 	@JoinColumn(name = "ma_loai", referencedColumnName = "ma_loai")
 	private ItemGroup itemGroup;
 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "kichco_mathang",
+	joinColumns = {
+			@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
+	},
+	inverseJoinColumns = {
+			@JoinColumn(name = "ma_kc", referencedColumnName = "ma_kc")
+	})
+	private List<Size> sizes;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
+	private List<ItemSize> itemSizes;
+	
 	public Item() {
 
 	}
@@ -130,6 +149,22 @@ public class Item {
 
 	public void setLinkImage(String linkImage) {
 		this.linkImage = linkImage;
+	}
+	
+	public List<Size> getSizes() {
+		return sizes;
+	}
+
+	public void setSizes(List<Size> sizes) {
+		this.sizes = sizes;
+	}
+
+	public List<ItemSize> getItemSizes() {
+		return itemSizes;
+	}
+
+	public void setItemSizes(List<ItemSize> itemSizes) {
+		this.itemSizes = itemSizes;
 	}
 
 	@Override

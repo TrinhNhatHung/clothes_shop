@@ -16,7 +16,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-md-6 col-lg-3">
-					<img src="./assets/img/logo/logomain.png" alt="" width="100px"
+					<img src="${contextPath}/resources/assets/img/logo/logomain.png" alt="" width="100px"
 						height="100px"
 						style="border-radius: 50%; border: 3px solid #000; margin-bottom: 20px;">
 					<ul class="footer__list">
@@ -38,13 +38,13 @@
 								<a href="mailto:abc@gmail.com">abc@gmail.com</a>
 							</p>
 						</li>
-						<li><a href=""><i class="fab fa-facebook"
-								style="font-size: 24px; margin-right: 10px"></i></a> <a href=""><i
+						<li><a href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-facebook"
+								style="font-size: 24px; margin-right: 10px"></i></a> <a href="https://www.facebook.com/tien.nquyen.77"><i
 								class="fab fa-instagram"
 								style="font-size: 24px; margin-right: 10px; color: pink;"></i></a> <a
-							href=""><i class="fab fa-youtube"
+							href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-youtube"
 								style="font-size: 24px; margin-right: 10px; color: red;"></i></a> <a
-							href=""><i class="fab fa-twitter"
+							href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-twitter"
 								style="font-size: 24px; margin-right: 10px"></i></a></li>
 					</ul>
 				</div>
@@ -56,14 +56,13 @@
 						<i class="fas fa-chevron-down checkdl1"></i>
 					</div>
 					<ul class="footer__list collapse show" id="demo2">
-						<li class="footer__item"><a href=""
-							class="footer__item--link">Cơ sở 1: 26 Đường D1, P12, Quận
-								Tân Bình, TP.HCM</a></li>
-						<li class="footer__item"><a href=""
-							class="footer__item--link">Cơ sở 2: 86 Đinh Bộ Lĩnh, P10,
-								Quận Bình Thanh, TP.HCM</a></li>
-						<li class="footer__item"><a href=""
-							class="footer__item--link">Lĩnh vực kinh doanh</a></li>
+						<li class="footer__item"><a href="https://www.google.com/maps/d/u/0/viewer?ie=UTF8&t=h&oe=UTF8&msa=
+						0&mid=17C-Xb8xJ3cWzD-WkplbhFN83FZI&ll=16.074903430040692%2C108.15500790031243&z=17"
+							class="footer__item--link">Cơ sở 1: 54 Nguyễn Lương Bằng, Hoà Khánh Bắc, Liên Chiểu, Đà Nẵng
+							</a></li>
+						<li class="footer__item"><a href="https://www.google.com/maps/d/u/0/viewer?ie=UTF8&t=h&oe=UTF8&msa=
+						0&mid=17C-Xb8xJ3cWzD-WkplbhFN83FZI&ll=16.074903430040692%2C108.15500790031243&z=17"
+							class="footer__item--link">Cơ sở 2: 41 Đ. Lê Duẩn, Hải Châu 1, Hải Châu, Đà Nẵng</a></li>
 					</ul>
 				</div>
 				<div class="col-sm-12 col-md-6 col-lg-3">
@@ -94,16 +93,8 @@
 						<i class="fas fa-chevron-down checkdl1"></i>
 					</div>
 					<ul class="footer__list collapse show" id="demo">
-						<li class="footer__item"><a href="./index.html"
+						<li class="footer__item"><a href="${contextPath}"
 							class="footer__item--link">Trang chủ</a>
-						<li class="footer__item"><a href="./intro.html"
-							class="footer__item--link">Giới thiệu</a></li>
-						<li class="footer__item"><a href="./index.html"
-							class="footer__item--link">Sản phẩm</a></li>
-						<li class="footer__item"><a href="./news.html"
-							class="footer__item--link">Tin tức</a></li>
-						<li class="footer__item"><a href="./contact.html"
-							class="footer__item--link">Liên hệ</a></li>
 					</ul>
 				</div>
 			</div>

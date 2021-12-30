@@ -69,13 +69,13 @@
 				<div class="row">
 					<div class="col-6 social_link">
 						<div class="social-title">Theo dõi:</div>
-						<a href=""><i class="fab fa-facebook"
-							style="font-size: 24px; margin-right: 10px"></i></a> <a href=""><i
+						<a href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-facebook"
+							style="font-size: 24px; margin-right: 10px"></i></a> <a href="https://www.facebook.com/tien.nquyen.77"><i
 							class="fab fa-instagram"
 							style="font-size: 24px; margin-right: 10px; color: pink;"></i></a> <a
-							href=""><i class="fab fa-youtube"
+							href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-youtube"
 							style="font-size: 24px; margin-right: 10px; color: red;"></i></a> <a
-							href=""><i class="fab fa-twitter"
+							href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-twitter"
 							style="font-size: 24px; margin-right: 10px"></i></a>
 					</div>
 					<div class="col-6 login_link">
@@ -97,7 +97,7 @@
 							<i class="fas fa-bars"></i>
 						</div>
 						<div class="logo">
-							<a href=""> <img
+							<a href="${contextPath}"> <img
 								src="${contextPath}/resources/assets/img/logo/logomain.png"
 								alt="">
 							</a>

@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.shop.entity.Item;
+import com.shop.entity.Size;
 import com.shop.util.HqlUtils;
 
 @Repository
@@ -50,6 +51,11 @@ public class ItemDao extends EntityDao<Item> {
 		hql += HqlUtils.getSort(sort);
 		Query<Item> query = session.createQuery(hql);
 		return query.list().size();
+	}
+
+	public List<Size> getSizes(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -50,7 +50,7 @@
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/style.css">
 <link rel="icon"
-	href="${contextPath}/resources/assets/img/logo/main.png"
+	href="${contextPath}/resources/assets/img/logo/logomain.png"
 	type="image/x-icon" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -105,11 +105,11 @@
 
 							<div class="col-lg-4 col-md-6 col-12 mb-20"
 								style="margin-bottom: 20px">
-								<a href="./ProductDetail.html" class="product__new-item">
+								<a href="${contextPath}/item-detail/${item.id}"
+									class="product__new-item">
 									<div class="card" style="width: 100%">
 										<div>
-											<img class="card-img-top"
-												src="${item.linkImage}"
+											<img class="card-img-top" src="${item.linkImage}"
 												alt="Card image cap">
 											<form action="" class="hover-icon hidden-sm hidden-xs">
 												<input type="hidden"> <a href="./pay.html"
@@ -121,21 +121,27 @@
 										<div class="card-body">
 											<h5 class="card-title custom__name-product">${item.name}</h5>
 											<div class="product__price">
-												<p class="card-text price-color product__price-old">
-													${item.outPrice}đ</p>
-												<p class="card-text price-color product__price-new">
+												<p class="card-text price-color product__price-new"">
 													<script type="text/javascript">
 														var newOutPrice = ${item.outPrice} * (100 - ${item.discount}) / 100;
 														document.write(newOutPrice)
 													</script>
 													đ
 												</p>
+												<c:if test="${item.discount != 0 }">
+													<p class="card-text price-color product__price-old">
+													${item.outPrice}đ</p>
+												</c:if>
+
+												
 											</div>
 
-											<div class="sale-off">
-												<span class="sale-off-percent">${item.discount}%</span> <span
-													class="sale-off-label">GIẢM</span>
-											</div>
+											<c:if test="${item.discount != 0 }">
+												<div class="sale-off" id="div-discount">
+													<span class="sale-off-percent">${item.discount}%</span> <span
+														class="sale-off-label">GIẢM</span>
+												</div>
+											</c:if>
 										</div>
 									</div>
 								</a>
@@ -152,13 +158,20 @@
 			</div>
 		</div>
 	</div>
-	<h1>${sizePage}</h1>
 	<!-- FOOTER -->
 	<%@ include file="footer.jsp"%>
 
 </body>
 
 <script>
+
+var discount = document.getElementById("span-discount");
+if(discount.innerHTML === '0%'){
+	console.log("00000000");
+	document.getElementById("div-discount").hidden = true;
+	document.getElementById("old-price").hidden = true;
+}
+
 	function setSearch() {
 		var url_string = window.location.href
 		var url = new URL(url_string);
