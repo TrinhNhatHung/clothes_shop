@@ -1,11 +1,14 @@
 package com.shop.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -41,7 +44,7 @@ public class User {
 	@Column(name = "password")
 	@NotNull(message = "Bắt buộc")
 	private String password;
-	
+
 	@NotNull(message = "Bắt buộc")
 	@Transient
 	private String passwordConfirmation;
@@ -53,6 +56,9 @@ public class User {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id", referencedColumnName = "role_id")
 	private Role role;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<Cart> carts;
 
 	public User() {
 
@@ -130,6 +136,14 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public List<Cart> getCarts() {
+		return carts;
+	}
+
+	public void setCarts(List<Cart> carts) {
+		this.carts = carts;
 	}
 
 }

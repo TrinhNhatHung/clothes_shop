@@ -1,5 +1,6 @@
 package com.shop.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private RoleService roleService;
 
@@ -33,7 +34,7 @@ public class UserController {
 	}
 
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpServletRequest request) {
 		return "login";
 	}
 
@@ -60,7 +61,7 @@ public class UserController {
 			model.addAttribute("registrationError", "Username đã tồn tại.");
 			return "signup";
 		}
-		
+
 		user.setRole(roleService.findByName("ROLE_CUSTOMER"));
 		userService.insertOrUpdate(user);
 

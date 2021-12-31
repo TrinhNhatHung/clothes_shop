@@ -22,7 +22,7 @@
 			<a href="">
 				<div class="drawer-header--auth">
 					<div class="_object">
-						<img src="./assets/img/product/giayxah2.jpg" alt="">
+						<img src="" alt="">
 					</div>
 					<div class="_body">
 						Đăng nhập <br>Nhận nhiều ưu đãi hơn
@@ -31,8 +31,8 @@
 			</a>
 		</div>
 		<ul class="ul-first-menu">
-			<li><a href="">Đăng nhập</a></li>
-			<li><a href="" class="abc">Đăng kí</a></li>
+			<li><a href="${contextPath }/login">Đăng nhập</a></li>
+			<li><a href="${contextPath }/signup" class="abc">Đăng kí</a></li>
 		</ul>
 
 		</ul>
@@ -80,8 +80,15 @@
 					</div>
 					<div class="col-6 login_link">
 						<ul class="header_link right m-auto">
-							<li><a href="${pageContext.request.contextPath}/login"><i
-									class="fas fa-sign-in-alt mr-3"></i>Đăng nhập</a></li>
+							<security:authorize access="isAuthenticated()">
+								<li><i class="fas fa-user mr-3"></i><security:authentication
+										property="principal.username" /></li>
+							</security:authorize>
+							<security:authorize access="!isAuthenticated()">
+								<li><a href="${pageContext.request.contextPath}/login"><i
+										class="fas fa-sign-in-alt mr-3"></i>Đăng nhập</a></li>
+							</security:authorize>
+
 							<li><a href="${pageContext.request.contextPath}/signup"><i
 									class="fas fa-user-plus mr-3" style="margin-left: 10px;"></i>Đăng
 									kí</a></li>
@@ -126,8 +133,8 @@
 					</div>
 					<div class="col-3 m-auto hidden-sm hidden-xs">
 						<div class="item-car clearfix">
-							<a href="./cart.html" class="header__second__cart--icon"> <i
-								class="fas fa-shopping-cart"></i> <span
+							<a href="${contextPath }/cart" class="header__second__cart--icon">
+								<i class="fas fa-shopping-cart"></i> <span
 								id="header__second__cart--notice"
 								class="header__second__cart--notice">3</span>
 							</a>

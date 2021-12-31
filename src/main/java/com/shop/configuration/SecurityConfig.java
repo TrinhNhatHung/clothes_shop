@@ -8,19 +8,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.shop.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
+	private UserDetailsService userDetailService;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -29,10 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/resources/**", "/signup", "/", "/processSignup", "/search", "/item-detail/**").permitAll().anyRequest().authenticated()
-				.and().formLogin().loginPage("/login").failureUrl("/login?error").loginProcessingUrl("/authenticate")
-				.permitAll().and().logout().permitAll().and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
+		http.authorizeRequests()
+				.antMatchers("/resources/**", "/signup", "/", "/processSignup", "/search", "/item-detail/**")
+				.permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login")
+				.failureUrl("/login?error").loginProcessingUrl("/authenticate").permitAll().and().logout().permitAll()
+				.and().exceptionHandling().accessDeniedPage("/access-denied");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -44,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-		auth.setUserDetailsService(userService);
+		auth.setUserDetailsService(userDetailService);
 		auth.setPasswordEncoder(passwordEncoder());
 		return auth;
 	}

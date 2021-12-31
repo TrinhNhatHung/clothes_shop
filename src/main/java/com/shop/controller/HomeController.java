@@ -1,7 +1,6 @@
 package com.shop.controller;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.shop.entity.Item;
 import com.shop.entity.ItemGroup;
 import com.shop.entity.ItemSize;
-import com.shop.entity.Size;
 import com.shop.service.ItemService;
-import com.shop.util.FirebaseUtil;
 
 @Controller
 public class HomeController {
@@ -96,6 +93,7 @@ public class HomeController {
 		model.addAttribute("sizes", sizes);
 		model.addAttribute("status", status);
 		return "itemDetail";
+
 	}
 
 }
