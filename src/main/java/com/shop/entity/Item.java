@@ -47,19 +47,8 @@ public class Item {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ma_loai", referencedColumnName = "ma_loai")
 	private ItemGroup itemGroup;
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "kichco_mathang",
-	joinColumns = {
-			@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
-	},
-	inverseJoinColumns = {
-			@JoinColumn(name = "ma_kc", referencedColumnName = "ma_kc")
-	})
-	private List<Size> sizes;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "item")
 	private List<ItemSize> itemSizes;
 	
 	public Item() {
@@ -149,14 +138,6 @@ public class Item {
 
 	public void setLinkImage(String linkImage) {
 		this.linkImage = linkImage;
-	}
-	
-	public List<Size> getSizes() {
-		return sizes;
-	}
-
-	public void setSizes(List<Size> sizes) {
-		this.sizes = sizes;
 	}
 
 	public List<ItemSize> getItemSizes() {
