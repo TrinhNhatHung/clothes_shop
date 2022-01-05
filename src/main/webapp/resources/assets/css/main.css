@@ -997,6 +997,7 @@ ul .level1 li a:hover {
     border-radius: 100%;
     background: #fff;
     display: block;
+    border: none
 }
 .btn-add-to-cart:hover,
 .quickview:hover {

@@ -60,6 +60,9 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Cart> carts;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	private List<Order> customerOrders;
+
 	public User() {
 
 	}
@@ -144,6 +147,14 @@ public class User {
 
 	public void setCarts(List<Cart> carts) {
 		this.carts = carts;
+	}
+
+	public List<Order> getCustomerOrders() {
+		return customerOrders;
+	}
+
+	public void setCustomerOrders(List<Order> customerOrders) {
+		this.customerOrders = customerOrders;
 	}
 
 }

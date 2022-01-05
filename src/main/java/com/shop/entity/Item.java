@@ -2,14 +2,13 @@ package com.shop.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,6 +20,7 @@ public class Item {
 
 	@Id
 	@Column(name = "ma_mh")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "tenmathang")
@@ -44,11 +44,12 @@ public class Item {
 	@Transient
 	private String linkImage;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ma_loai", referencedColumnName = "ma_loai")
 	private ItemGroup itemGroup;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "item")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
 	private List<ItemSize> itemSizes;
 	
 	public Item() {
@@ -146,6 +147,20 @@ public class Item {
 
 	public void setItemSizes(List<ItemSize> itemSizes) {
 		this.itemSizes = itemSizes;
+	}
+	
+	@Override
+	public Item clone() throws CloneNotSupportedException {
+		Item item = new Item();
+		item.id = this.id;
+		item.name = this.name;
+		item.outPrice = this.outPrice;
+		item.inPrice = this.inPrice;
+		item.description = this.description;
+		item.discount = this.discount;
+		item.image = this.image;
+		item.itemGroup = this.itemGroup.clone();
+		return item;
 	}
 
 	@Override

@@ -100,79 +100,8 @@ form.example::after {
 	<div class="content">
 		<div class="wrap">
 			<div class="container">
-				<form action="">
+				<form:form action="${contextPath }/buy" method="POST" modelAttribute="order">
 					<div class="row">
-						<div class="summary col-lg-6 col-12 hidden">
-							<div class="summary-heading">
-								<div class="summary-heading-title">
-									<h4>Thông tin đơn hàng</h4>
-								</div>
-								<div class="summary-heading-price">
-									<h4>
-										3.000.000 <i class="fas fa-chevron-down"
-											style="margin-left: 20px; margin-right: 5px;"></i>
-									</h4>
-								</div>
-							</div>
-							<div class="summary-content hidden">
-								<div class="sliderbar">
-									<div class="sliderbar-content">
-										<div class="row row-sliderbar">
-											<div class="col-6">
-												<img src="./assets/img/product/stansmith.jpg" alt=""
-													width="80%"> <span class="notice">3</span>
-											</div>
-											<div class="col-6">
-												<h5>ÁO THỦ MÔN ĐTVN 2021 GRAND SPORT - 038-322 - VÀNG
-													CAM</h5>
-												<span>625,000₫</span>
-											</div>
-										</div>
-										<div class="row row-sliderbar">
-											<div class="col-6">
-												<img src="./assets/img/product/stansmith.jpg" alt=""
-													width="80%"> <span class="notice">3</span>
-											</div>
-											<div class="col-6">
-												<h5>ÁO THỦ MÔN ĐTVN 2021 GRAND SPORT - 038-322 - VÀNG
-													CAM</h5>
-												<span>625,000₫</span>
-											</div>
-										</div>
-									</div>
-									<div class="slider-footer">
-										<div class="subtotal">
-											<div class="row row-sliderbar-footer">
-												<div class="col-6">
-													<span>Tạm tính:</span>
-												</div>
-												<div class="col-6 text-right">
-													<span>625,000₫</span>
-												</div>
-											</div>
-											<div class="row row-sliderbar-footer">
-												<div class="col-6">
-													<span>Phí vận chuyển</span>
-												</div>
-												<div class="col-6 text-right">
-													<span>35,000₫</span>
-												</div>
-											</div>
-										</div>
-										<div class="total">
-											<div class="row row-sliderbar-footer">
-												<div class="col-6">
-													<span>Tổng cộng:</span>
-												</div>
-												<div class="col-6 text-right">
-													<span>660,000₫</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 						<div class="col-lg-6 col-12">
 							<div class="main">
 								<div class="main-header">
@@ -188,17 +117,17 @@ form.example::after {
 									<div class="fieldset">
 										<div class="fieldset-address form-group">
 											<label for="diachi" class="form-label" for="">Địa chỉ</label>
-											<input id="diachi" type="text" class="form-control" value="${user.address}">
+											<input id="diachi" name="address" type="text" class="form-control" value="${user.address}">
 											<span class="form-message"></span>
 										</div>
 										<div class="fieldset-name form-group">
 											<label for="hoten" class="form-label" for="">Họ tên</label> <input
-												id="hoten" type="text" class="form-control" value="${user.fullname}"> <span
+												id="hoten" name="receiverName" type="text" class="form-control" value="${user.fullname}"> <span
 												class="form-message"></span>
 										</div>
 										<div class="fieldset-phone form-group">
 											<label for="sdt" class="form-label" for="">Số điện
-												thoại</label> <input id="sdt" type="text" class="form-control" value="${user.phone}">
+												thoại</label> <input id="sdt" name="receiverPhone" type="text" class="form-control" value="${user.phone}">
 											<span class="form-message"></span>
 										</div>
 
@@ -210,7 +139,7 @@ form.example::after {
 										</a>
 									</div>
 									<div class="pay">
-										<button class="btn-pay form-submit">Thanh toán</button>
+										<button type="submit" class="btn-pay form-submit">Thanh toán</button>
 									</div>
 								</div>
 							</div>
@@ -223,6 +152,7 @@ form.example::after {
 								</div>
 								<div class="sliderbar-content">
 									<c:forEach items="${carts }" var="cart">
+										<input type="hidden" name="carts" value="${cart.item.id }">
 										<div class="row row-sliderbar">
 											<div class="col-4">
 												<img src="${cart.item.linkImage }" alt=""
@@ -232,37 +162,19 @@ form.example::after {
 												<h5>${cart.item.name }</h5>
 											</div>
 											<div class="col-2">
-												<span>${cart.item.outPrice * cart.quantity }đ</span>
+												<span>${cart.item.outPrice * cart.quantity * (100 - cart.item.discount)/ 100 }đ</span>
 											</div>
 										</div>
 									</c:forEach>
 								</div>
 								<div class="slider-footer">
-									<div class="subtotal">
-										<div class="row row-sliderbar-footer">
-											<div class="col-6">
-												<span>Tạm tính:</span>
-											</div>
-											<div class="col-6 text-right">
-												<span>${totalBill }đ</span>
-											</div>
-										</div>
-										<div class="row row-sliderbar-footer">
-											<div class="col-6">
-												<span>Phí vận chuyển</span>
-											</div>
-											<div class="col-6 text-right">
-												<span>35,000₫</span>
-											</div>
-										</div>
-									</div>
 									<div class="total">
 										<div class="row row-sliderbar-footer">
 											<div class="col-6">
 												<span>Tổng cộng:</span>
 											</div>
 											<div class="col-6 text-right">
-												<span>660,000₫</span>
+												<span>${totalBill }đ</span>
 											</div>
 										</div>
 									</div>
@@ -270,7 +182,7 @@ form.example::after {
 							</div>
 						</div>
 					</div>
-				</form>
+				</form:form>
 			</div>
 		</div>
 	</div>
@@ -280,25 +192,5 @@ form.example::after {
 </body>
 <script src="resources/assets/js/validator.js"></script>
 <script src="resources/assets/js/main.js"></script>
-<script>
-	Validator({
-		form : '#form-2',
-		formGroupSelector : '.form-group',
-		errorSelector : '.form-message',
-		rules : [ Validator.isRequired('#hoten', 'Vui lòng nhập tên đầy đủ'),
-				Validator.isRequired('#sdt'), Validator.isRequired('#diachi'),
-				Validator.isEmail('#email'), Validator.isRequired('#password'),
-				Validator.minLength('#password', 6),
-				Validator.isRequired('#password_confirmation'),
-		// Validator.isRequired('input[name="gender"]'),
-		// Validator.isConfirmed('#password_confirmation', function(){
-		//   return document.querySelector('#form-1 #password').value;
-		// }, 'Mật khẩu nhập lại không chính xác')
-		],
-		onSubmit : function(data) {
-			// call api
-			console.log(data);
-		}
-	});
-</script>
+
 </html>

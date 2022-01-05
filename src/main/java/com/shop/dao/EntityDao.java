@@ -41,4 +41,9 @@ public class EntityDao<E> {
 		Session session = getCurrentSession();
 		session.saveOrUpdate(e);
 	}
+	
+	public void insert(E e) {
+		Session session = getCurrentSession();
+		session.save(e);
+	}
 }

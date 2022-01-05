@@ -41,6 +41,10 @@ public class CartService {
 		return carts;
 	}
 
+	public int getQuantityCartByUsername(String username) {
+		return cartDao.getQuantityCartByUsername(username);
+	}
+
 	@Transactional
 	public void delete(String username, Integer itemId) {
 		Id id = new Id(username, itemId);
@@ -58,15 +62,34 @@ public class CartService {
 		user.setUsername(username);
 		Cart cart = new Cart(id, quantity, item, user);
 		cart.setQuantity(quantity);
-		
+
 		if (quantity == 0) {
 			cartDao.delete(cart);
 		} else {
 			cartDao.insertOrUpdate(cart);
 		}
 	}
+	
+	@Transactional
+	public boolean addItemNotExistInCart (String username, Integer itemId) {
+		Id id = new Id(username, itemId);
+		Cart exstingCart = cartDao.getById(Cart.class, id);
+		if (exstingCart != null) {
+			return false;
+		}
+		
+		Item item = new Item();
+		item.setId(itemId);
+		User user = new User();
+		user.setUsername(username);
+		Cart cart = new Cart(id, 1, item, user);
+		cartDao.insertOrUpdate(cart);
+		return true;
+	}
 
 	public int getTotalBill(List<Cart> carts) {
-		return carts.stream().mapToInt(cart -> cart.getItem().getOutPrice() * cart.getQuantity()).sum();
+		return carts.stream().mapToInt(
+				cart -> cart.getItem().getOutPrice() * cart.getQuantity() * (100 - cart.getItem().getDiscount()) / 100)
+				.sum();
 	}
 }

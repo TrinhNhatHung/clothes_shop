@@ -2,7 +2,6 @@ package com.shop.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
@@ -22,11 +21,16 @@ public class ItemSize {
 	@Column(name = "soluong")
 	private Integer quantity;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
+	@ManyToOne(fetch = FetchType.LAZY)
 	@MapsId("itemId")
+	@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
 	private Item item;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@MapsId("sizeId")
+	@JoinColumn(name = "ma_kc", referencedColumnName = "ma_kc")
+	private Size size;
+
 	public ItemSize() {
 	}
 

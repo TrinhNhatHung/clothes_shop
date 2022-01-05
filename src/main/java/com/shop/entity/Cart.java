@@ -114,5 +114,16 @@ public class Cart {
 			return serialVersionUID;
 		}
 
+		@Override
+		public String toString() {
+			return "Id [username=" + username + ", itemId=" + itemId + "]";
+		}
+
 	}
+
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", quantity=" + quantity + "]";
+	}
+
 }

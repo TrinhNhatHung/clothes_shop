@@ -176,14 +176,14 @@ button.button-hidden {
 										<div class="col-md-11 col-10" style="text-align: center;">
 											<div class="row card-info" style="align-items: center;">
 												<div class="col-md-2 col-12 card-info-img">
-													<a href=""><img class="cart-img"
+													<a href="${contextPath }/item-detail/${cart.item.id}"><img class="cart-img"
 														src="${cart.item.linkImage }" alt=""></a>
 												</div>
 												<div class="col-md-3 col-12">
-													<a href="" class="cart-name"><h5>${cart.item.name }</h5></a>
+													<a href="${contextPath }/item-detail/${cart.item.id}" class="cart-name"><h5>${cart.item.name }</h5></a>
 												</div>
 												<div class="col-md-2 col-12" style="font-size: 16px;">
-													<span>${cart.item.outPrice }</span>
+													<span>${cart.item.outPrice * (100 - cart.item.discount)/100 }</span>
 												</div>
 												<div class="col-md-3 col-12">
 													<div class="cart-quantity">
@@ -207,7 +207,7 @@ button.button-hidden {
 												</div>
 												<div class="col-md-2 col-12 hidden-xs"
 													style="font-size: 16px;">
-													<span>${cart.item.outPrice * cart.quantity }</span>
+													<span>${cart.item.outPrice * cart.quantity * (100 - cart.item.discount)/100 }</span>
 												</div>
 											</div>
 										</div>

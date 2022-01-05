@@ -3,9 +3,12 @@ package com.shop.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,12 +17,13 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-@Entity(name = "donhang")
 @Table(name = "donhang")
+@Entity(name = "donhang")
 public class Order {
 
 	@Id
 	@Column(name = "ma_dh")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "ngay_tao")
@@ -46,11 +50,9 @@ public class Order {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nhan_vien", referencedColumnName = "username")
 	private User acceptEmployee;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-	private List<OrderDetail> orderDetail;
 
-	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	private List<OrderDetail> orderDetails;
 
 	public Order() {
 		super();
@@ -132,13 +134,19 @@ public class Order {
 	public void setAcceptEmployee(User acceptEmployee) {
 		this.acceptEmployee = acceptEmployee;
 	}
-	
-	public List<OrderDetail> getOrderDetail() {
-		return orderDetail;
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
 	}
 
-	public void setOrderDetail(List<OrderDetail> orderDetail) {
-		this.orderDetail = orderDetail;
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", createAt=" + createAt + ", address=" + address + ", receiverName=" + receiverName
+				+ ", receiverPhone=" + receiverPhone + "]";
 	}
 
 }

@@ -2,6 +2,7 @@ package com.shop.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
@@ -13,7 +14,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Table(name = "chitietdonhang")
-@Entity
+@Entity(name = "chitietdonhang")
 public class OrderDetail {
 
 	@EmbeddedId
@@ -24,17 +25,16 @@ public class OrderDetail {
 
 	@Column(name = "dongia")
 	private Integer price;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ma_dh", referencedColumnName = "ma_dh")
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@MapsId("orderId")
+	@JoinColumn(name = "ma_dh", referencedColumnName = "ma_dh")
 	private Order order;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@MapsId("itemId")
+	@JoinColumn(name = "ma_mh", referencedColumnName = "ma_mh")
 	private Item item;
-	
 	public OrderDetail() {
 		super();
 	}
@@ -69,7 +69,7 @@ public class OrderDetail {
 	public void setPrice(Integer price) {
 		this.price = price;
 	}
-	
+
 	public Order getOrder() {
 		return order;
 	}

@@ -59,6 +59,18 @@
 
 </head>
 
+<style>
+a.link-in-btn {
+	display: block; 
+	text-align: center;
+	color : white;
+	text-decoration:  none
+}
+
+a.link-in-btn:hover {
+	color : black
+}
+</style>
 
 
 <body>
@@ -132,9 +144,10 @@
 
 					</div>
 					<div class="product__shopnow">
-						<button class="shopnow">Mua ngay</button>
-						<button class="add-cart" onclick="fadeInModal()">Thêm vào
-							giỏ</button>
+						<button class="shopnow">
+							<a class="link-in-btn" href="${contextPath }/cart">Mua ngay</a>
+						</button>
+						<button class="add-cart" >Thêm vào giỏ</button>
 					</div>
 				</div>
 			</div>

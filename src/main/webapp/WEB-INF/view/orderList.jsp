@@ -10,13 +10,10 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>P&T Shop</title>
+<title>MU Shop</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-
-
 <link
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
 	rel="stylesheet" />
@@ -26,11 +23,17 @@
 
 
 </head>
-
+<style>
+.overflow-address {
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100px
+}
+</style>
 
 <body>
-
-
 
 	<div class="container mb-18">
 		<div class="row">
@@ -70,7 +73,7 @@
 											<h5 class="font-medium mb-0">${order.receiverName}</h5>
 										</td>
 										<td><span class="text-muted">${order.receiverPhone}</span><br></td>
-										<td><span class="text-muted">${order.address}</span><br></td>
+										<td><span class="text-muted overflow-address">${order.address}</span><br></td>
 										<td><span class="text-muted">${order.createAt}</span><br></td>
 										<td><span class="text-muted">${order.status.status}</span><br></td>
 

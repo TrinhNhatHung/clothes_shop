@@ -3,20 +3,19 @@ package com.shop.dao;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.shop.entity.Item;
 import com.shop.entity.Order;
-import com.shop.util.HqlUtils;
+import com.shop.entity.OrderStatus;
 
 @Repository
 public class OrderDao extends EntityDao<Order>{
-
+	
+	@Autowired
+	private OrderStatusDao orderStatusDao;
 	
 	public int getTotalPage() {
 		return (int)getCurrentSession().createNativeQuery("SELECT COUNT(*) counter FROM donhang")
@@ -57,6 +56,14 @@ public class OrderDao extends EntityDao<Order>{
 		} catch (Exception e) {
 			transaction.rollback();
 		}
+	}
+	
+	public void insert(Order order) {
+		
+		OrderStatus orderStatus = orderStatusDao.findByStatus(OrderStatus.WAITING);
+		order.setStatus(orderStatus);
+		
+		super.insert(order);
 	}
 
 }

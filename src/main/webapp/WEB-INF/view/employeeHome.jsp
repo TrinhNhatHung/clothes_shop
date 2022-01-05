@@ -61,6 +61,15 @@
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 	crossorigin="anonymous"></script>
 </head>
+
+<style>
+.normal-text {
+	text-transform: lowercase;
+    font-weight: 100;
+    font-size: smaller;
+    color : #6c757d
+}
+</style>
 <body>
 
 	<!-- HEADER -->
@@ -119,7 +128,7 @@
 									class="fa fa-close icon-close"></i></span>
 								<div class="card-body">
 									<h5 class="card-title text-uppercase mb-0">Quản lý đơn
-										hàng</h5>
+										hàng  <span class="normal-text">( ${order.address })</span></h5>
 								</div>
 								<div class="table-responsive">
 									<table class="table no-wrap user-table mb-0">
@@ -137,7 +146,7 @@
 										</thead>
 										<tbody>
 
-											<c:forEach var="orderDetail" items="${order.orderDetail}">
+											<c:forEach var="orderDetail" items="${order.orderDetails}">
 												<tr class="value-order">
 													<td class="pl-4">
 														<h5>${orderDetail.id.orderId}</h5>

@@ -111,12 +111,14 @@
 										<div>
 											<img class="card-img-top" src="${item.linkImage}"
 												alt="Card image cap">
-											<form action="" class="hover-icon hidden-sm hidden-xs">
-												<input type="hidden"> <a href="./pay.html"
+											<form:form action="${contextPath }/addToCart" method="POST" class="hover-icon hidden-sm hidden-xs">
+												<input type="hidden" name="queryString" value="<%= request.getQueryString()%>">
+												<input type="hidden" name="url" value="${url }">
+												<input type="hidden" name="itemId" value ="${item.id }"> <button type="submit"
 													class="btn-add-to-cart" title="Mua ngay"> <i
 													class="fas fa-cart-plus"></i>
-												</a>
-											</form>
+												</button>
+											</form:form>
 										</div>
 										<div class="card-body">
 											<h5 class="card-title custom__name-product">${item.name}</h5>

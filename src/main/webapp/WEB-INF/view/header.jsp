@@ -14,6 +14,25 @@
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/style.css">
 </head>
+<style>
+button.button-hidden {
+	border: none;
+	background-color: white;
+	outline: none
+}
+
+form.logout {
+	margin-right: 0px;
+}
+
+i.icon {
+	color: #000000
+}
+
+i.icon:hover {
+	color: #dc3545;
+}
+</style>
 <body>
 	<div class="overlay hidden"></div>
 	<!-- mobile menu -->
@@ -32,9 +51,7 @@
 		</div>
 		<ul class="ul-first-menu">
 			<li><a href="${contextPath }/login">Đăng nhập</a></li>
-			<li><a href="${contextPath }/signup" class="abc">Đăng kí</a></li>
-		</ul>
-
+			<li><a href="${contextPath }/signup">Đăng kí</a></li>
 		</ul>
 		<div class="la-scroll-fix-infor-user">
 			<div class="la-nav-menu-items">
@@ -69,19 +86,23 @@
 				<div class="row">
 					<div class="col-6 social_link">
 						<div class="social-title">Theo dõi:</div>
-						<a href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-facebook"
-							style="font-size: 24px; margin-right: 10px"></i></a> <a href="https://www.facebook.com/tien.nquyen.77"><i
+						<a href="https://www.facebook.com/tien.nquyen.77"><i
+							class="fab fa-facebook"
+							style="font-size: 24px; margin-right: 10px"></i></a> <a
+							href="https://www.facebook.com/tien.nquyen.77"><i
 							class="fab fa-instagram"
 							style="font-size: 24px; margin-right: 10px; color: pink;"></i></a> <a
-							href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-youtube"
+							href="https://www.facebook.com/tien.nquyen.77"><i
+							class="fab fa-youtube"
 							style="font-size: 24px; margin-right: 10px; color: red;"></i></a> <a
-							href="https://www.facebook.com/tien.nquyen.77"><i class="fab fa-twitter"
+							href="https://www.facebook.com/tien.nquyen.77"><i
+							class="fab fa-twitter"
 							style="font-size: 24px; margin-right: 10px"></i></a>
 					</div>
 					<div class="col-6 login_link">
 						<ul class="header_link right m-auto">
 							<security:authorize access="isAuthenticated()">
-								<li><i class="fas fa-user mr-3"></i><security:authentication
+								<li><i class="fas fa-user mr-3"></i> <security:authentication
 										property="principal.username" /></li>
 							</security:authorize>
 							<security:authorize access="!isAuthenticated()">
@@ -110,14 +131,10 @@
 							</a>
 						</div>
 						<div class="mobile_cart visible-sm visible-xs">
-							<a href="./cart.html" class="header__second__cart--icon"> <i
-								class="fas fa-shopping-cart"></i> <span
+							<a href="${contextPath }/cart" class="header__second__cart--icon">
+								<i class="fas fa-shopping-cart"></i> <span
 								id="header__second__cart--notice"
-								class="header__second__cart--notice">3</span>
-							</a> <a href="./listlike.html" class="header__second__like--icon">
-								<i class="far fa-heart"></i> <span
-								id="header__second__like--notice"
-								class="header__second__like--notice">3</span>
+								class="header__second__cart--notice">${amountInCart }</span>
 							</a>
 						</div>
 					</div>
@@ -132,19 +149,44 @@
 						</form>
 					</div>
 					<div class="col-3 m-auto hidden-sm hidden-xs">
-						<div class="item-car clearfix">
-							<a href="${contextPath }/cart" class="header__second__cart--icon">
-								<i class="fas fa-shopping-cart"></i> <span
-								id="header__second__cart--notice"
-								class="header__second__cart--notice">3</span>
-							</a>
-						</div>
-						<div class="item-like clearfix">
-							<a href="./listlike.html" class="header__second__like--icon">
-								<i class="far fa-heart"></i> <span
-								id="header__second__like--notice"
-								class="header__second__like--notice">3</span>
-							</a>
+						<div class="item-car clearfix d-flex align-items-center">
+							<security:authorize access='hasRole("CUSTOMER")'>
+								<a href="${contextPath }/purchase"
+									class="header__second__cart--icon" data-toggle="tooltip"
+									data-placement="bottom" title="Đơn mua"> <i
+									class="fas fa-file-invoice icon"></i>
+								</a>
+							</security:authorize>
+
+							<security:authorize access='hasRole("STAFF")'>
+								<a href="${contextPath }/employee"
+									class="header__second__cart--icon" data-toggle="tooltip"
+									data-placement="bottom" title="Xác nhận đơn"> <i
+									class="fas fa-file-invoice icon"></i>
+								</a>
+							</security:authorize>
+							<security:authorize access='hasRole("CUSTOMER") || !isAuthenticated()'>
+								<a href="${contextPath }/cart"
+									class="header__second__cart--icon" data-toggle="tooltip"
+									data-placement="bottom" title="Giỏ hàng"> <i
+									class="fas fa-shopping-cart icon"></i> <security:authorize
+										access="isAuthenticated()">
+										<span id="header__second__cart--notice"
+											class="header__second__cart--notice">${quantityCart }</span>
+									</security:authorize>
+								</a>
+							</security:authorize>
+
+							<security:authorize access="isAuthenticated()">
+								<form:form action="${contextPath }/logout" method="POST"
+									class="header__second__cart--icon logout">
+									<button class="button-hidden" type="submit"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Đăng xuất">
+										<i class="fas fa-sign-out-alt icon"></i>
+									</button>
+								</form:form>
+							</security:authorize>
 						</div>
 					</div>
 				</div>

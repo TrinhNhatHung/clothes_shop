@@ -5,9 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name = "tinhtrangdonhang")
 @Table(name = "tinhtrangdonhang")
+@Entity(name = "tinhtrangdonhang")
 public class OrderStatus {
+	public static final String WAITING = "Chờ xác nhận";
+	public static final String DELIVERING = "Đang giao";
+	public static final String DELIVERED = "Đã giao";
+	public static final String CANCLED = "Đã hủy";
 
 	@Id
 	@Column(name = "ma_ttdh")
