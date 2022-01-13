@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Entity
 @Table(name = "mathang")
 public class Item {
@@ -56,11 +58,24 @@ public class Item {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ma_loai", referencedColumnName = "ma_loai")
 	private ItemGroup itemGroup;
-	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL)
 	private List<ItemSize> itemSizes;
-	
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+	private List<OrderDetail> orderDetails;
+
+	@Transient
+	private MultipartFile fileImage;
+
+	public MultipartFile getFileImage() {
+		return fileImage;
+	}
+
+	public void setFileImage(MultipartFile fileImage) {
+		this.fileImage = fileImage;
+	}
+
 	public Item() {
 
 	}
@@ -166,7 +181,15 @@ public class Item {
 	public void setItemSizes(List<ItemSize> itemSizes) {
 		this.itemSizes = itemSizes;
 	}
-	
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+
 	@Override
 	public Item clone() throws CloneNotSupportedException {
 		Item item = new Item();

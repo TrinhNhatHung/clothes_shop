@@ -1,6 +1,7 @@
 package com.shop.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +20,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shop.dto.ItemDto;
+import com.shop.dto.UserDto;
 import com.shop.entity.Item;
 import com.shop.entity.ItemGroup;
 import com.shop.entity.ItemSize;
 import com.shop.entity.ItemSize.Id;
 import com.shop.entity.Order;
 import com.shop.entity.Size;
+import com.shop.entity.User;
 import com.shop.service.ItemService;
 import com.shop.service.OrderService;
 import com.shop.service.SizeService;
+import com.shop.service.UserService;
+import com.shop.util.DateUtil;
 import com.shop.util.FirebaseUtil;
 
 @Controller
@@ -37,7 +43,7 @@ public class AdminController {
 	private int CONFIRURABLE_RECORDS_PER_PAGE = 6;
 
 	@Autowired
-	private ItemService itemService;
+	private UserService userService;
 
 	@Autowired
 	private OrderService orderService;
@@ -53,7 +59,8 @@ public class AdminController {
 			@RequestParam(name = "page", defaultValue = "1") int page,
 			@RequestParam(name = "id", defaultValue = "-1") int id,
 			@RequestParam(name = "type", defaultValue = "null") String type, Model model) {
-
+		model.addAttribute("url", "items");
+		
 		int totalRecords = itemService.getTotalPage(name);
 
 		int recordsPerPage = CONFIRURABLE_RECORDS_PER_PAGE;
@@ -75,6 +82,7 @@ public class AdminController {
 
 	@GetMapping("/items/update")
 	public String updateItem(@RequestParam("id") int id, Model model) {
+		model.addAttribute("url", "items");
 		Item item = itemService.getById(id);
 		System.out.println(item.getId() + " : " + item.getLinkImage() + " : " + item.getImage());
 		model.addAttribute("item", item);
@@ -91,6 +99,7 @@ public class AdminController {
 
 	@GetMapping("/items/add")
 	public String addItem(Model model) {
+		model.addAttribute("url", "items");
 		model.addAttribute("item", new Item());
 		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
 		model.addAttribute("itemGroups", itemGroups);
@@ -107,7 +116,8 @@ public class AdminController {
 			@RequestParam(name = "sizeId") List<String> sizeIds,
 			@RequestParam(name = "quantity") List<Integer> quantities,
 			@RequestParam(name = "imageFile", required = false) MultipartFile file, Model model) {
-
+		model.addAttribute("url", "items");
+		
 		if (bindingResult.hasErrors()) {
 			System.out.println("ERROR" + bindingResult);
 			System.out.println("ERROR");
@@ -156,7 +166,7 @@ public class AdminController {
 			@RequestParam(value = "search", defaultValue = "") String search,
 			@RequestParam(value = "id", defaultValue = "-1") int id,
 			@RequestParam(value = "type", defaultValue = "null") String type) {
-
+		model.addAttribute("url", "orders");
 		int totalRecords = orderService.getTotalPage(search);
 		System.out.println("SIZE: " + totalRecords);
 
@@ -175,7 +185,8 @@ public class AdminController {
 	}
 
 	@GetMapping("orders/add/{id}")
-	public String addOrder(RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+	public String addOrder(Model model, RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+		model.addAttribute("url", "orders");
 		orderService.addOrder(id);
 		redirectAttributes.addAttribute("id", id);
 		redirectAttributes.addAttribute("type", "add");
@@ -183,7 +194,8 @@ public class AdminController {
 	}
 
 	@GetMapping("orders/delete/{id}")
-	public String deleteOrder(RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+	public String deleteOrder(Model model,RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+		model.addAttribute("url", "orders");
 		orderService.deletOrder(id);
 		redirectAttributes.addAttribute("id", id);
 		redirectAttributes.addAttribute("type", "delete");
@@ -191,10 +203,105 @@ public class AdminController {
 	}
 
 	@GetMapping("items/delete/{id}")
-	public String deleteItem(RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+	public String deleteItem(Model model, RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+		model.addAttribute("url", "items");
 		itemService.deleteItem(id);
 		redirectAttributes.addAttribute("id", id);
 		redirectAttributes.addAttribute("type", "delete");
 		return "redirect:/admin/items";
+	}
+	
+	@Autowired
+	private ItemService itemService;
+
+	@GetMapping({ "", "/" })
+	public String overview(Model model, @RequestParam(name = "time", required = false) String time) {
+		model.addAttribute("url", "");
+		LocalDate duration = null;
+		if (time == null) {
+			duration = LocalDate.now();
+		} else {
+			time = time + "-01";
+			duration = DateUtil.convertToLocalDate(time, "yyyy-MM-dd");
+		}
+		int totalNewUser = userService.getTotalNewUserByMonth(duration);
+		model.addAttribute("totalNewUser", totalNewUser);
+
+		int totalOrder = orderService.getTotalOrderByMonth(duration);
+		model.addAttribute("totalOrder", totalOrder);
+
+		int totalRevenue = orderService.getTotalRevenueByMonth(duration);
+		model.addAttribute("totalRevenue", totalRevenue);
+
+		int totalIncome = orderService.getTotalIncomeByMonth(duration);
+		model.addAttribute("totalIncome", totalIncome);
+
+		List<Order> orders = orderService.getOrderByMonth(duration);
+		model.addAttribute("orders", orders);
+
+		List<UserDto> userDtos = userService.getCustomerOrderedInMonth(duration);
+		model.addAttribute("userDtos", userDtos);
+
+		List<ItemDto> itemDtos = itemService.getSoldItemInMonth(duration);
+		model.addAttribute("itemDtos", itemDtos);
+		return "overview";
+	}
+
+	@GetMapping("/customer")
+	public String customer(Model model, @RequestParam(name = "page", defaultValue = "1") Integer page,
+			@RequestParam(name = "searchText", defaultValue = "") String searchText,
+			@RequestParam(name = "field", defaultValue = "username") String field) {
+		model.addAttribute("url", "customer");
+		List<User> users = userService.getUserByRoleAndSearchCondition("ROLE_CUSTOMER", field, searchText, page);
+		model.addAttribute("users", users);
+
+		int totalCustomer = userService.getTotalUserByRoleAndSeachCondition("ROLE_CUSTOMER", field, searchText);
+		int surplus = totalCustomer % 10;
+		int totalPage = (totalCustomer / 10) + (surplus == 0 ? 0 : 1);
+		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("currentPage", page);
+
+		int nextPage = page + 1;
+
+		if (nextPage > totalPage || nextPage < 1) {
+			nextPage = totalPage;
+		}
+		model.addAttribute("nextPage", nextPage);
+
+		int previousPage = page - 1;
+		if (previousPage > totalPage || previousPage < 1) {
+			previousPage = 1;
+		}
+		model.addAttribute("previousPage", previousPage);
+		return "adminCustomer";
+	}
+
+	@GetMapping("/employee")
+	public String employee(Model model, @RequestParam(name = "page", defaultValue = "1") Integer page,
+			@RequestParam(name = "searchText", defaultValue = "") String searchText,
+			@RequestParam(name = "field", defaultValue = "username") String field) {
+		model.addAttribute("url", "employee");
+		List<User> users = userService.getUserByRoleAndSearchCondition("ROLE_STAFF", field, searchText, page);
+		model.addAttribute("users", users);
+
+		int totalCustomer = userService.getTotalUserByRoleAndSeachCondition("ROLE_STAFF", field, searchText);
+		int surplus = totalCustomer % 10;
+		int totalPage = (totalCustomer / 10) + (surplus == 0 ? 0 : 1);
+		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("currentPage", page);
+
+		int nextPage = page + 1;
+
+		if (nextPage > totalPage || nextPage < 1) {
+			nextPage = totalPage;
+		}
+		model.addAttribute("nextPage", nextPage);
+
+		int previousPage = page - 1;
+		if (previousPage > totalPage || previousPage < 1) {
+			previousPage = 1;
+		}
+		model.addAttribute("previousPage", previousPage);
+		return "adminEmployee";
 	}
 }

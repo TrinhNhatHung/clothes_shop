@@ -35,7 +35,10 @@
 </head>
 
 <style>
-.nav {
+body {
+	background: #edf1f5 !important;
+}
+.nav.nav-tab {
 	background-color: white;
 	margin: 10px 0px;
 	border-radius: 3px;
@@ -43,22 +46,22 @@
 	justify-content: space-between !important;
 }
 
-.nav .nav-item {
+.nav.nav-tab .nav-item {
 	flex-grow: 1;
 	text-align: center;
 }
 
-.nav .nav-item.active {
+.nav.nav-tab .nav-item.active {
 	border-bottom: solid 2px #6c757d;
 }
 
-.nav .nav-item .nav-link {
+.nav.nav-tab .nav-item .nav-link {
 	padding: 10px 0px;
 	color: #6c757d;
 	font-size: 1.5em
 }
 
-.nav .nav-item .nav-link.active {
+.nav.nav-tab .nav-item .nav-link.active {
 	color: #212529 !important;
 	font-weight: bold;
 }
@@ -92,181 +95,192 @@
 	text-decoration: none;
 	color: #6c757d;
 }
+
+.col {
+	padding: 0px !important;
+}
+
+.col-10, .col-9 {
+	display: flex;
+	flex-direction: column;
+	justify-content: center
+}
+
+.col-2, .col-3 {
+	padding: 0px !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 </style>
 
 <body>
 
+	<div class="row">
+		<div class="side-bar col-2">
+			<%@ include file="adminSidebar.jsp"%>
+		</div>
+		<div class="main-content col-10">
+			<%@ include file="adminHeader.jsp"%>
+			<div class="container-fluid mb-18">
+				<ul class="nav-tab nav justify-content-center shadow rounded">
+					<li class="nav-item active"><a class="nav-link active"
+						aria-current="page" href="${contextPath }/admin/items">Tất cả
+							sản phẩm</a></li>
+					<li class="nav-item"><a class="nav-link " aria-current="page"
+						href="${contextPath }/admin/items/add">Thêm sản phẩm</a></li>
+				</ul>
+				<br>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="ca shadow rounded" style="background-color: white;">
+							<div class="card-body">
+								<h5 class="card-title text-uppercase mb-0">Quản lý đơn hàng</h5>
+							</div>
+							<div class="table-responsive">
+								<table class="table no-wrap user-table mb-0">
+									<thead>
+										<tr class="title-order">
+											<th scope="col"
+												class="border-0 text-uppercase font-medium pl-4">Mã</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Tên</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Loại</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Giá
+												bán</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Giá
+												mua</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Giảm
+												giá</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Tình
+												trạng</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Hành
+												động</th>
+										</tr>
+									</thead>
+									<tbody>
 
-	<%@ include file="header.jsp"%>
-	<div class="container mb-18">
-		<ul class="nav justify-content-center">
-			<li class="nav-item"><a class="nav-link" aria-current="page"
-				href="${contextPath }/purchase">Tổng quan</a></li>
-			<li class="nav-item"><a class="nav-link " aria-current="page"
-				href="${contextPath }/purchase">Người dùng</a></li>
-			<li class="nav-item  active"><a class="nav-link active"
-				aria-current="page" href="${contextPath }/admin/items">Sản phẩm</a></li>
-			<li class="nav-item"><a class="nav-link " aria-current="page"
-				href="${contextPath }/admin/orders">Đơn hàng</a></li>
-		</ul>
+										<c:forEach var="item" items="${items}">
+											<tr class="value-order">
+												<td class="pl-4">
+													<h5>${item.id}</h5>
+												</td>
+												<td>
+													<h5 class="font-medium mb-0 overflow-address">${item.name}</h5>
+												</td>
+												<td><span class="text-muted">${item.itemGroup.name}</span><br></td>
+												<td><span class="text-muted">${item.outPrice}</span><br></td>
+												<td><span class="text-muted">${item.inPrice}</span><br></td>
+												<td><span class="text-muted">${item.discount}</span><br></td>
+												<td><span class="text-muted"> <c:forEach
+															var="itemSize" items="${item.itemSizes}">
+															<span>${itemSize.id.sizeId}(${itemSize.quantity});</span>
+														</c:forEach>
+												</span> <br></td>
+												<td>
+													<button type="button"
+														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														onclick="showAdd(${item.id})">
+														<i class="fa fa-edit"></i>
+													</button>
+													<button type="button"
+														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														onclick="showDelete(${item.id})">
+														<i class="fa fa-trash"></i>
+													</button>
+												</td>
+											</tr>
+										</c:forEach>
 
-		<ul class="nav justify-content-center">
-			<li class="nav-item active"><a class="nav-link active"
-				aria-current="page" href="${contextPath }/admin/items">Tất cả
-					sản phẩm</a></li>
-			<li class="nav-item"><a class="nav-link " aria-current="page"
-				href="${contextPath }/admin/items/add">Thêm sản phẩm</a></li>
-		</ul>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="ca" style="background-color: white;">
-					<div class="card-body">
-						<h5 class="card-title text-uppercase mb-0">Quản lý đơn hàng</h5>
-					</div>
-					<div class="table-responsive">
-						<table class="table no-wrap user-table mb-0">
-							<thead>
-								<tr class="title-order">
-									<th scope="col"
-										class="border-0 text-uppercase font-medium pl-4">Mã</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Tên</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Loại</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Giá
-										bán</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Giá
-										mua</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Giảm
-										giá</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Tình
-										trạng</th>
-									<th scope="col" class="border-0 text-uppercase font-medium">Hành
-										động</th>
-								</tr>
-							</thead>
-							<tbody>
-
-								<c:forEach var="item" items="${items}">
-									<tr class="value-order">
-										<td class="pl-4">
-											<h5>${item.id}</h5>
-										</td>
-										<td>
-											<h5 class="font-medium mb-0 overflow-address">${item.name}</h5>
-										</td>
-										<td><span class="text-muted">${item.itemGroup.name}</span><br></td>
-										<td><span class="text-muted">${item.outPrice}</span><br></td>
-										<td><span class="text-muted">${item.inPrice}</span><br></td>
-										<td><span class="text-muted">${item.discount}</span><br></td>
-										<td><span class="text-muted"> <c:forEach
-													var="itemSize" items="${item.itemSizes}">
-													<span>${itemSize.id.sizeId}(${itemSize.quantity});</span>
-												</c:forEach>
-										</span> <br></td>
-										<td>
-											<button type="button"
-												class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
-												onclick="showAdd(${item.id})">
-												<i class="fa fa-edit"></i>
-											</button>
-											<button type="button"
-												class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
-												onclick="showDelete(${item.id})">
-												<i class="fa fa-trash"></i>
-											</button>
-										</td>
-									</tr>
-								</c:forEach>
-
-							</tbody>
-						</table>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="container">
+
+				<ul class="pagination pagination-lg justify-content-center">
+					<li class="page-item" id="previous"><a class="page-link"
+						id="previousA">Trước</a></li>
+
+					<li class="page-item disabled"><a class="page-link" id="page"
+						href="">${page}</a></li>
+
+					<li class="page-item" id="next" value="${sizePage}"><a
+						class="page-link" id="nextA">Sau</a></li>
+				</ul>
+			</div>
+
+			<c:forEach var="item" items="${items}">
+
+				<div class="modal-shop" id="modal-add-${item.id}">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Cập nhật sản phẩm</h5>
+							</div>
+							<div class="modal-body">
+								<p>Bạn có muốn cập nhập sản phẩm có mã '${item.id}' này
+									không ?</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									onclick="closeAdd(${item.id})">Đóng</button>
+								<button type="button" class="btn btn-primary"
+									onclick="updateItem(${item.id})">Cập nhật</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-shop" id="modal-delete-${item.id}">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Xóa sản phẩm</h5>
+							</div>
+							<div class="modal-body">
+								<p>Bạn có muốn xóa sản phẩm có mã '${item.id}' này không ?</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									onclick="closeDelete(${item.id})">Đóng</button>
+								<button type="button" class="btn btn-primary"
+									onclick="deleteItem(${item.id})">Xóa</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+
+			<c:if test="${id >= 0}">
+				<div class="abcde">
+					<div class="alert show showAlert">
+						<c:if test="${type == 'add'}">
+							<span class="fas fa-check-circle"></span>
+							<span class="msg">Thêm sản phẩm thành công!</span>
+						</c:if>
+
+						<c:if test="${type == 'update'}">
+							<span class="fas fa-check-circle"></span>
+							<span class="msg">Cập nhật sản phẩm có mã '${id}' thành
+								công!</span>
+						</c:if>
+
+						<c:if test="${type == 'delete'}">
+							<span class="fas fa-check-circle"></span>
+							<span class="msg">Xóa sản phẩm có mã '${id}' thành công!</span>
+						</c:if>
+
+						<div class="close-btn">
+							<span class="fas fa-times"></span>
+						</div>
+					</div>
+				</div>
+			</c:if>
 		</div>
 	</div>
-	<div class="container">
-
-		<ul class="pagination pagination-lg justify-content-center">
-			<li class="page-item" id="previous"><a class="page-link"
-				id="previousA">Trước</a></li>
-
-			<li class="page-item disabled"><a class="page-link" id="page"
-				href="">${page}</a></li>
-
-			<li class="page-item" id="next" value="${sizePage}"><a
-				class="page-link" id="nextA">Sau</a></li>
-		</ul>
-	</div>
-
-	<%@ include file="footer.jsp"%>
-
-	<c:forEach var="item" items="${items}">
-
-		<div class="modal-shop" id="modal-add-${item.id}">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Cập nhật sản phẩm</h5>
-					</div>
-					<div class="modal-body">
-						<p>Bạn có muốn cập nhập sản phẩm có mã '${item.id}' này không
-							?</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							onclick="closeAdd(${item.id})">Đóng</button>
-						<button type="button" class="btn btn-primary"
-							onclick="updateItem(${item.id})">Cập nhật</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal-shop" id="modal-delete-${item.id}">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Xóa sản phẩm</h5>
-					</div>
-					<div class="modal-body">
-						<p>Bạn có muốn xóa sản phẩm có mã '${item.id}' này không ?</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							onclick="closeDelete(${item.id})">Đóng</button>
-						<button type="button" class="btn btn-primary"
-							onclick="deleteItem(${item.id})">Xóa</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</c:forEach>
-
-	<c:if test="${id >= 0}">
-		<div class="abcde">
-			<div class="alert show showAlert">
-				<c:if test="${type == 'add'}">
-					<span class="fas fa-check-circle"></span>
-					<span class="msg">Thêm sản phẩm thành công!</span>
-				</c:if>
-				
-				<c:if test="${type == 'update'}">
-					<span class="fas fa-check-circle"></span>
-					<span class="msg">Cập nhật sản phẩm có mã '${id}' thành công!</span>
-				</c:if>
-				
-				<c:if test="${type == 'delete'}">
-					<span class="fas fa-check-circle"></span>
-					<span class="msg">Xóa sản phẩm có mã '${id}' thành công!</span>
-				</c:if>
-
-				<div class="close-btn">
-					<span class="fas fa-times"></span>
-				</div>
-			</div>
-		</div>
-	</c:if>
-
 
 </body>
 

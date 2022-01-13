@@ -8,6 +8,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "role")
 public class Role {
+	
+	public static final String ROLE_CUSTOMER = "ROLE_CUSTOMER";
+	public static final String ROLE_STAFF = "ROLE_STAFF";
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 	@Id
 	@Column(name = "role_id")

@@ -1,5 +1,6 @@
 package com.shop.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.shop.validation.ConfirmMessage;
 import com.shop.validation.ValidPhone;
@@ -52,6 +55,10 @@ public class User {
 	@Column(name = "gender")
 	@NotNull(message = "Bắt buộc")
 	private String gender;
+	
+	@Column(name = "createAt")
+	@CreationTimestamp
+	private LocalDate createAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id", referencedColumnName = "role_id")

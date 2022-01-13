@@ -35,15 +35,15 @@
 
 <body>
 
-	<div class="container mb-18">
+	<div class="container-fluid mb-18">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="ca" style="background-color: white;">
+				<div class="ca rounded shadow" style="background-color: white;">
 					<div class="card-body">
 						<h5 class="card-title text-uppercase mb-0">Quản lý đơn hàng</h5>
 					</div>
 					<div class="table-responsive">
-						<table class="table no-wrap user-table mb-0">
+						<table class="table table-hover table-striped no-wrap user-table mb-0">
 							<thead>
 								<tr class="title-order">
 									<th scope="col"
@@ -122,11 +122,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- MODAL -->
-
-
-
 
 	</div>
 

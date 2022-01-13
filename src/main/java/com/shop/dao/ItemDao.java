@@ -1,15 +1,16 @@
 package com.shop.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.type.IntegerType;
 import org.springframework.stereotype.Repository;
 
 import com.shop.entity.Item;
-import com.shop.entity.Size;
 import com.shop.util.HqlUtils;
 
 @Repository
@@ -32,8 +33,9 @@ public class ItemDao extends EntityDao<Item> {
 		Session session = getCurrentSession();
 		System.out.println("SORT = " + sort);
 
-		String hql = "From Item i WHERE i.status = true and i.outPrice between " + from + " and " + to + " and i.itemGroup.name LIKE '%"
-				+ itemGroup + "%'" + " and i.name LIKE '%" + search + "%' " + HqlUtils.getSort(sort);
+		String hql = "From Item i WHERE i.status = true and i.outPrice between " + from + " and " + to
+				+ " and i.itemGroup.name LIKE '%" + itemGroup + "%'" + " and i.name LIKE '%" + search + "%' "
+				+ HqlUtils.getSort(sort);
 		Query<Item> query = session.createQuery(hql);
 		query.setFirstResult(page * 6);
 		query.setMaxResults(6);
@@ -45,8 +47,8 @@ public class ItemDao extends EntityDao<Item> {
 		Session session = getCurrentSession();
 		String hql = "";
 		if (pageIn.equals("search")) {
-			hql = "From Item i WHERE i.status = true and i.outPrice between " + from + " and " + to + " and i.itemGroup.name LIKE '%"
-					+ itemGroup + "%'" + " and i.name LIKE '%" + search + "%' ";
+			hql = "From Item i WHERE i.status = true and i.outPrice between " + from + " and " + to
+					+ " and i.itemGroup.name LIKE '%" + itemGroup + "%'" + " and i.name LIKE '%" + search + "%' ";
 		} else {
 			hql = "FROM Item i ";
 		}
@@ -55,23 +57,31 @@ public class ItemDao extends EntityDao<Item> {
 		return query.list().size();
 	}
 
-	public List<Size> getSizes(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Item> getSoldItemInMonth(LocalDate time) {
+		int month = time.getMonthValue();
+		int year = time.getYear();
+
+		String sql = "SELECT DISTINCT(i.ma_mh), i.tenmathang, i.giaban, i.giamua, i.mota, i.giamgia, i.hinhanh, i.ma_loai, i.trangthai FROM mathang i\n"
+				+ "JOIN chitietdonhang ctdh ON i.ma_mh = ctdh.ma_mh\n" + "JOIN donhang dh ON dh.ma_dh = ctdh.ma_dh\n"
+				+ "WHERE month(ngay_tao) = :month AND year(ngay_tao) = :year";
+		NativeQuery<Item> query = openSession().createNativeQuery(sql, Item.class);
+		query.setParameter("month", month).setParameter("year", year);
+		return query.getResultList();
 	}
 
 	public int getTotalPage(String name) {
-		return (int)getCurrentSession().createNativeQuery("SELECT COUNT(*) counter FROM mathang WHERE trangthai = 1 and tenmathang LIKE '%" + name +"%'")
-				.addScalar("counter", IntegerType.INSTANCE)
-				.uniqueResult();
+		return (int) getCurrentSession()
+				.createNativeQuery(
+						"SELECT COUNT(*) counter FROM mathang WHERE trangthai = 1 and tenmathang LIKE '%" + name + "%'")
+				.addScalar("counter", IntegerType.INSTANCE).uniqueResult();
 	}
 
 	public List<Item> getItems(String name, int offset, int recordsPerPage) {
-		return openSession().createNativeQuery("SELECT * FROM mathang WHERE trangthai = 1 and tenmathang LIKE '%"
-					+ name +"%' LIMIT :offset, :rowcount", Item.class)
+		return openSession()
+				.createNativeQuery("SELECT * FROM mathang WHERE trangthai = 1 and tenmathang LIKE '%" + name
+						+ "%' LIMIT :offset, :rowcount", Item.class)
 				.setParameter("offset", offset, IntegerType.INSTANCE)
-				.setParameter("rowcount", recordsPerPage, IntegerType.INSTANCE)
-				.getResultList();
+				.setParameter("rowcount", recordsPerPage, IntegerType.INSTANCE).getResultList();
 	}
 
 	public void deleteItem(int id) {

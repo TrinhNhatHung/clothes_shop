@@ -69,12 +69,16 @@
     font-size: smaller;
     color : #6c757d
 }
+
+body {
+	background: #edf1f5 !important;
+}
 </style>
 <body>
 
 	<!-- HEADER -->
 	<%@ include file="header.jsp"%>
-	<!-- MAIN -->
+	<br>
 	<%@ include file="orderList.jsp"%>
 
 	<div class="container">
@@ -122,7 +126,7 @@
 				<div class="container mb-18">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="ca" style="background-color: white;">
+							<div class="ca rounded shadow" style="background-color: white;">
 								<span class="close" id="close-list-item"
 									onclick="closeListItem(${order.id})"><i
 									class="fa fa-close icon-close"></i></span>

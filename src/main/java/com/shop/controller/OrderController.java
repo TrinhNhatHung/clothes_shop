@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -87,6 +88,14 @@ public class OrderController {
 		model.addAttribute("order", order);
 		return "detailOrder";
 	}
+	
+	@PostMapping("/purchase/deliveryConfirm")
+	public String deliveriedConfirmation(@RequestParam(name = "orderId") Integer orderId,
+							@RequestParam(name="url", defaultValue = "purchase") String url) {
+		OrderStatus orderStatus = orderStatusService.findByStatus(OrderStatus.DELIVERED);
+		orderService.changeStatusOrder(orderId, orderStatus.getId());
+		return "redirect:/" + url;
+	}
 
 	private int CONFIRURABLE_RECORDS_PER_PAGE = 6;
 
@@ -111,19 +120,22 @@ public class OrderController {
 		return "employeeHome";
 	}
 
-	@GetMapping("employee/add/{id}")
-	public String addOrder(RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
-		orderService.addOrder(id);
-		redirectAttributes.addAttribute("id", id);
+	@GetMapping("employee/add/{orderId}")
+	public String addOrder(RedirectAttributes redirectAttributes, @PathVariable("orderId") int orderId) {
+		OrderStatus orderStatus = orderStatusService.findByStatus(OrderStatus.DELIVERING);
+		orderService.changeStatusOrder(orderId, orderStatus.getId());
+		redirectAttributes.addAttribute("id", orderId);
 		redirectAttributes.addAttribute("type", "add");
 		return "redirect:/employee";
 	}
 
-	@GetMapping("employee/delete/{id}")
-	public String deleteOrder(RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
-		orderService.deletOrder(id);
-		redirectAttributes.addAttribute("id", id);
+	@GetMapping("employee/delete/{orderId}")
+	public String deleteOrder(RedirectAttributes redirectAttributes, @PathVariable("orderId") int orderId) {
+		OrderStatus orderStatus = orderStatusService.findByStatus(OrderStatus.CANCLED);
+		orderService.changeStatusOrder(orderId, orderStatus.getId());
+		redirectAttributes.addAttribute("id", orderId);
 		redirectAttributes.addAttribute("type", "delete");
 		return "redirect:/employee";
 	}
+	
 }

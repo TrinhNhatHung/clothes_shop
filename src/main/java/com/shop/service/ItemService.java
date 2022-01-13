@@ -1,5 +1,7 @@
 package com.shop.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shop.dao.ItemDao;
 import com.shop.dao.ItemGroupDao;
+import com.shop.dto.ItemDto;
 import com.shop.entity.Item;
 import com.shop.entity.ItemGroup;
-import com.shop.entity.Size;
+import com.shop.entity.OrderDetail;
 import com.shop.util.FirebaseUtil;
 
 @Service
@@ -67,9 +70,28 @@ public class ItemService {
 		return item;
 	}
 
-	@Transactional
-	public List<Size> getSizes(int id) {
-		return itemDao.getSizes(id);
+	public List<ItemDto> getSoldItemInMonth(LocalDate time) {
+		int month = time.getMonthValue();
+		int year = time.getYear();
+		List<ItemDto> result = new ArrayList<>();
+		List<Item> items = itemDao.getSoldItemInMonth(time);
+		for (Item item : items) {
+			ItemDto itemDto = new ItemDto();
+			itemDto.setItemId(item.getId());
+			itemDto.setItemGroup(item.getItemGroup().getName());
+			itemDto.setName(item.getName());
+			itemDto.setPrice(item.getOutPrice());
+
+			List<OrderDetail> orderDetails = item.getOrderDetails();
+			int quantity = orderDetails.stream()
+					.filter(orderDetail -> orderDetail.getOrder().getCreateAt().getMonthValue() == month
+							&& orderDetail.getOrder().getCreateAt().getYear() == year)
+					.mapToInt(OrderDetail::getQuantity).sum();
+			itemDto.setSoldQuantityByTime(quantity);
+			result.add(itemDto);
+		}
+
+		return result;
 	}
 
 	@Transactional
@@ -81,7 +103,7 @@ public class ItemService {
 	public List<Item> getItems(String name, int offset, int recordsPerPage) {
 		return itemDao.getItems(name, offset, recordsPerPage);
 	}
-	
+
 	@Transactional
 	public void insertAndUpdate(Item item) {
 		itemDao.insertOrUpdate(item);

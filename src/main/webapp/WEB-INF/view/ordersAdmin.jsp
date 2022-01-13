@@ -63,39 +63,15 @@
 </head>
 
 <style>
+body {
+	background: #edf1f5 !important;
+}
+
 .normal-text {
 	text-transform: lowercase;
 	font-weight: 100;
 	font-size: smaller;
 	color: #6c757d
-}
-
-.nav {
-	background-color: white;
-	margin: 10px 0px;
-	border-radius: 3px;
-	display: flex;
-	justify-content: space-between !important;
-}
-
-.nav .nav-item {
-	flex-grow: 1;
-	text-align: center;
-}
-
-.nav .nav-item.active {
-	border-bottom: solid 2px #6c757d;
-}
-
-.nav .nav-item .nav-link {
-	padding: 10px 0px;
-	color: #6c757d;
-	font-size: 1.5em
-}
-
-.nav .nav-item .nav-link.active {
-	color: #212529 !important;
-	font-weight: bold;
 }
 
 .table .title-order th {
@@ -128,166 +104,166 @@
 	color: #6c757d;
 }
 
-.mb-10 {
-	margin-bottom: 10px
+.col {
+	padding: 0px !important;
+}
+
+.col-10, .col-9 {
+	display: flex;
+	flex-direction: column;
+	justify-content: center
+}
+
+.col-2, .col-3 {
+	padding: 0px !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 </style>
-<body style="background-color: #edf1f5">
+<body>
 
-	<!-- HEADER -->
-	<%@ include file="header.jsp"%>
-
-	<div class="container mb-10">
-		<ul class="nav justify-content-center" style="margin-bottom: 10px">
-			<li class="nav-item"><a class="nav-link" aria-current="page"
-				href="${contextPath }/purchase">Tổng quan</a></li>
-			<li class="nav-item"><a class="nav-link " aria-current="page"
-				href="${contextPath }/purchase">Người dùng</a></li>
-			<li class="nav-item"><a class="nav-link" aria-current="page"
-				href="${contextPath }/admin/items">Sản phẩm</a></li>
-			<li class="nav-item active"><a class="nav-link active"
-				aria-current="page" href="${contextPath }/admin/orders">Đơn hàng</a></li>
-		</ul>
-
-		
-	</div>
-	<!-- MAIN -->
-		<%@ include file="orderList.jsp"%>
-
-		<div class="container">
-
-			<ul class="pagination pagination-lg justify-content-center">
-				<li class="page-item" id="previous"><a class="page-link"
-					id="previousA">Trước</a></li>
-
-				<li class="page-item disabled"><a class="page-link" id="page"
-					href="">${page}</a></li>
-
-				<li class="page-item" id="next" value="${sizePage}"><a
-					class="page-link" id="nextA">Sau</a></li>
-			</ul>
+	<div class="row">
+		<div class="side-bar col-2">
+			<%@ include file="adminSidebar.jsp"%>
 		</div>
+		<div class="main-content col-10">
+			<%@ include file="adminHeader.jsp"%>
+			<br>
+			<%@ include file="orderList.jsp"%>
+			<div class="container">
 
-		<c:if test="${id >= 0}">
-			<div class="abcde">
-				<div class="alert show showAlert">
-					<c:if test="${type == 'add'}">
-						<span class="fas fa-check-circle"></span>
-						<span class="msg">Xác nhận đơn hàng có mã '${id}' thành
-							công!</span>
-					</c:if>
-					<c:if test="${type == 'delete'}">
-						<span class="fas fa-check-circle"></span>
-						<span class="msg">Hủy đơn hàng có mã '${id}' thành công!</span>
-					</c:if>
+				<ul class="pagination pagination-lg justify-content-center">
+					<li class="page-item" id="previous"><a class="page-link"
+						id="previousA">Trước</a></li>
 
-					<div class="close-btn">
-						<span class="fas fa-times"></span>
+					<li class="page-item disabled"><a class="page-link" id="page"
+						href="">${page}</a></li>
+
+					<li class="page-item" id="next" value="${sizePage}"><a
+						class="page-link" id="nextA">Sau</a></li>
+				</ul>
+			</div>
+
+			<c:if test="${id >= 0}">
+				<div class="abcde">
+					<div class="alert show showAlert">
+						<c:if test="${type == 'add'}">
+							<span class="fas fa-check-circle"></span>
+							<span class="msg">Xác nhận đơn hàng có mã '${id}' thành
+								công!</span>
+						</c:if>
+						<c:if test="${type == 'delete'}">
+							<span class="fas fa-check-circle"></span>
+							<span class="msg">Hủy đơn hàng có mã '${id}' thành công!</span>
+						</c:if>
+
+						<div class="close-btn">
+							<span class="fas fa-times"></span>
+						</div>
 					</div>
 				</div>
-			</div>
-		</c:if>
+			</c:if>
 
-		<!-- FOOTER -->
-		<%@ include file="footer.jsp"%>
+			<c:forEach var="order" items="${orders}">
+				<div class="modal-shop" id="modal-list-${order.id}">
 
+					<div class="context">
+						<div class="container mb-18">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="ca" style="background-color: white;">
+										<span class="close" id="close-list-item"
+											onclick="closeListItem(${order.id})"><i
+											class="fa fa-close icon-close"></i></span>
+										<div class="card-body">
+											<h5 class="card-title text-uppercase mb-0">
+												Quản lý đơn hàng <span class="normal-text">(
+													${order.address })</span>
+											</h5>
+										</div>
+										<div class="table-responsive">
+											<table class="table no-wrap user-table mb-0">
 
-		<c:forEach var="order" items="${orders}">
-			<div class="modal-shop" id="modal-list-${order.id}">
-
-				<div class="context">
-					<div class="container mb-18">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="ca" style="background-color: white;">
-									<span class="close" id="close-list-item"
-										onclick="closeListItem(${order.id})"><i
-										class="fa fa-close icon-close"></i></span>
-									<div class="card-body">
-										<h5 class="card-title text-uppercase mb-0">
-											Quản lý đơn hàng <span class="normal-text">(
-												${order.address })</span>
-										</h5>
-									</div>
-									<div class="table-responsive">
-										<table class="table no-wrap user-table mb-0">
-
-											<thead>
-												<tr class="title-order">
-													<th scope="col"
-														class="border-0 text-uppercase font-medium pl-4">Mã
-														ĐH</th>
-													<th scope="col" class="border-0 text-uppercase font-medium">Tên
-													</th>
-													<th scope="col" class="border-0 text-uppercase font-medium">SL
-													</th>
-													<th scope="col" class="border-0 text-uppercase font-medium">Giá</th>
-												</tr>
-											</thead>
-											<tbody>
-
-												<c:forEach var="orderDetail" items="${order.orderDetails}">
-													<tr class="value-order">
-														<td class="pl-4">
-															<h5>${orderDetail.id.orderId}</h5>
-														</td>
-														<td>
-															<h5 class="font-medium mb-0">${orderDetail.item.name}</h5>
-														</td>
-														<td><span class="text-muted">${orderDetail.quantity}</span><br></td>
-														<td><span class="text-muted">${orderDetail.price}</span><br></td>
+												<thead>
+													<tr class="title-order">
+														<th scope="col"
+															class="border-0 text-uppercase font-medium pl-4">Mã
+															ĐH</th>
+														<th scope="col"
+															class="border-0 text-uppercase font-medium">Tên</th>
+														<th scope="col"
+															class="border-0 text-uppercase font-medium">SL</th>
+														<th scope="col"
+															class="border-0 text-uppercase font-medium">Giá</th>
 													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
+												</thead>
+												<tbody>
+
+													<c:forEach var="orderDetail" items="${order.orderDetails}">
+														<tr class="value-order">
+															<td class="pl-4">
+																<h5>${orderDetail.id.orderId}</h5>
+															</td>
+															<td>
+																<h5 class="font-medium mb-0">${orderDetail.item.name}</h5>
+															</td>
+															<td><span class="text-muted">${orderDetail.quantity}</span><br></td>
+															<td><span class="text-muted">${orderDetail.price}</span><br></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="modal-shop" id="modal-add-${order.id}">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Xác nhận đơn hàng</h5>
-						</div>
-						<div class="modal-body">
-							<p>Bạn có muốn xác nhận đơn hàng có mã '${order.id}' này
-								không ?</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								onclick="closeAdd(${order.id})">Đóng</button>
-							<button type="button" class="btn btn-primary"
-								onclick="addOrder(${order.id})">Xác nhận</button>
+				<div class="modal-shop" id="modal-add-${order.id}">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Xác nhận đơn hàng</h5>
+							</div>
+							<div class="modal-body">
+								<p>Bạn có muốn xác nhận đơn hàng có mã '${order.id}' này
+									không ?</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									onclick="closeAdd(${order.id})">Đóng</button>
+								<button type="button" class="btn btn-primary"
+									onclick="addOrder(${order.id})">Xác nhận</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="modal-shop" id="modal-delete-${order.id}">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Xóa đơn hàng</h5>
-						</div>
-						<div class="modal-body">
-							<p>Bạn có muốn xóa đơn hàng có mã '${order.id}' này không ?</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								onclick="closeDelete(${order.id})">Đóng</button>
-							<button type="button" class="btn btn-primary"
-								onclick="deleteOrder(${order.id})">Xóa</button>
+				<div class="modal-shop" id="modal-delete-${order.id}">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Xóa đơn hàng</h5>
+							</div>
+							<div class="modal-body">
+								<p>Bạn có muốn xóa đơn hàng có mã '${order.id}' này không ?</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									onclick="closeDelete(${order.id})">Đóng</button>
+								<button type="button" class="btn btn-primary"
+									onclick="deleteOrder(${order.id})">Xóa</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</c:forEach>
+			</c:forEach>
+		</div>
+	</div>
 </body>
 
 

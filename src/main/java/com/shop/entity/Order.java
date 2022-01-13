@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -38,6 +39,9 @@ public class Order {
 
 	@Column(name = "sdt_nguoi_nhan")
 	private String receiverPhone;
+
+	@Transient
+	private Integer totalMoney;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ma_ttdh", referencedColumnName = "ma_ttdh")
@@ -109,6 +113,14 @@ public class Order {
 
 	public void setReceiverPhone(String receiverPhone) {
 		this.receiverPhone = receiverPhone;
+	}
+
+	public Integer getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(Integer totalMoney) {
+		this.totalMoney = totalMoney;
 	}
 
 	public OrderStatus getStatus() {

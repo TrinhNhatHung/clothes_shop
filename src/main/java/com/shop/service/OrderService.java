@@ -1,7 +1,9 @@
 package com.shop.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +72,7 @@ public class OrderService {
 
 		return orderDao.getTotalPage();
 	}
-	
+
 	@Transactional
 	public int getTotalPage(String search) {
 
@@ -81,10 +83,56 @@ public class OrderService {
 	public List<Order> getOrderPerPage(int offset, int recordsPerPage) {
 		return orderDao.getOrderPerPage(offset, recordsPerPage);
 	}
-	
+
 	@Transactional
 	public List<Order> getOrderPerPage(String search, int offset, int recordsPerPage) {
 		return orderDao.getOrderPerPage(search, offset, recordsPerPage);
+	}
+
+	@Transactional
+	public void changeStatusOrder(int orderId, int statusId) {
+		orderDao.changeStatusOrder(orderId, statusId);
+	}
+
+	public int getTotalOrderByMonth(LocalDate time) {
+		return orderDao.getTotalOrderByMonth(time);
+	}
+
+	public List<Order> getOrderByMonth(LocalDate time) {
+		List<Order> orders = orderDao.getOrderByMonth(time);
+		return orders.stream().map(order -> {
+			int total = 0;
+			for (OrderDetail orderDetail : order.getOrderDetails()) {
+				total += orderDetail.getPrice() * orderDetail.getQuantity();
+			}
+			order.setTotalMoney(total);
+			return order;
+		}).collect(Collectors.toList());
+	}
+
+	public int getTotalRevenueByMonth(LocalDate time) {
+
+		List<Order> orders = orderDao.getDeliveredOrderByMonth(time);
+		int result = 0;
+		for (Order order : orders) {
+			List<OrderDetail> orderDetails = order.getOrderDetails();
+			result += orderDetails.stream().mapToInt(orderDetail -> orderDetail.getQuantity() * orderDetail.getPrice())
+					.sum();
+		}
+
+		return result;
+	}
+
+	public int getTotalIncomeByMonth(LocalDate time) {
+
+		List<Order> orders = orderDao.getDeliveredOrderByMonth(time);
+		int result = 0;
+		for (Order order : orders) {
+			List<OrderDetail> orderDetails = order.getOrderDetails();
+			result += orderDetails.stream().mapToInt(orderDetail -> orderDetail.getQuantity()
+					* (orderDetail.getPrice() - orderDetail.getItem().getInPrice())).sum();
+		}
+		return result;
 	}
 
 	@Transactional
@@ -96,6 +144,4 @@ public class OrderService {
 		orderDao.deleteOrder(id);
 
 	}
-
-	
 }

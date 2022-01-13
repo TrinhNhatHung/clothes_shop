@@ -112,11 +112,27 @@
 	text-decoration: none;
 	color: #6c757d;
 }
+
+.column-cell {
+	vertical-align: middle !important;
+}
+
+button.btn {
+	height: 35px !important;
+	width: 35px !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+button.btn i.fa {
+	font-size: small;
+}
 </style>
 <body>
 	<%@ include file="header.jsp"%>
 	<div class="container mb-18">
-		<ul class="nav justify-content-center">
+		<ul class="nav justify-content-center rounded shadow">
 			<c:if test='${param["status"] == null}'>
 				<li class="nav-item active"><a class="nav-link active"
 					aria-current="page" href="${contextPath }/purchase">Tất cả</a></li>
@@ -138,14 +154,14 @@
 				</c:if>
 			</c:forEach>
 		</ul>
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col-md-12">
-				<div class="ca" style="background-color: white;">
+				<div class="ca rounded shadow" style="background-color: white;">
 					<div class="card-body">
 						<h4 class="card-title text-uppercase mb-0">Đơn hàng của tôi</h4>
 					</div>
 					<div class="table-responsive">
-						<table class="table no-wrap user-table mb-0">
+						<table class="table table-striped table-hover no-wrap user-table mb-0">
 							<thead>
 								<tr class="title-order">
 									<th scope="col" class="border-0 text-uppercase font-medium">Mã
@@ -160,32 +176,51 @@
 										đặt</th>
 									<th scope="col" class="border-0 text-uppercase font-medium">Tình
 										trạng</th>
+									<th scope="col" class="border-0 text-uppercase font-medium"></th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${orders }" var="order">
 									<tr class="value-order">
-										<td><a class="anchor"
+										<td class="column-cell"><a class="anchor"
 											href="${contextPath }/purchase/order/${order.id}">
 												<h5 class="font-medium mb-0">${order.id}</h5>
 										</a></td>
-										<td><a class="anchor-grey"
+										<td class="column-cell"><a class="anchor-grey"
 											href="${contextPath }/purchase/order/${order.id}"> <span
 												class="text-muted">${order.address }</span><br>
 										</a></td>
-										<td><a class="anchor-grey"
+										<td class="column-cell"><a class="anchor-grey"
 											href="${contextPath }/purchase/order/${order.id}"> <span
 												class="text-muted">${order.receiverName }</span><br>
 										</a></td>
-										<td><a class="anchor-grey"
+										<td class="column-cell"><a class="anchor-grey"
 											href="${contextPath }/purchase/order/${order.id}"><span
 												class="text-muted">${order.receiverPhone }</span><br></a></td>
-										<td><a class="anchor-grey"
+										<td class="column-cell"><a class="anchor-grey"
 											href="${contextPath }/purchase/order/${order.id}"><span
 												class="text-muted">${order.createAt}</span><br></a></td>
-										<td><a class="anchor-grey"
+										<td class="column-cell"><a class="anchor-grey"
 											href="${contextPath }/purchase/order/${order.id}"><span
 												class="text-muted">${order.status.status}</span><br></a></td>
+										<td class="column-cell"><form:form
+												action="${contextPath }/purchase/deliveryConfirm"
+												method="POST">
+												<input type="hidden" name="url" value="purchase">
+												<input type="hidden" name="orderId" value="${order.id }">
+												<c:if test="${order.status.id == 2 }">
+													<button type="submit" title="Xác nhận giao hàng"
+														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-1">
+														<i class="fa fa-check"></i>
+													</button>
+												</c:if>
+												<c:if test="${order.status.id != 2 }">
+													<button type="submit" disabled="disabled" title="Xác nhận giao hàng"
+														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-1">
+														<i class="fa fa-check"></i>
+													</button>
+												</c:if>
+											</form:form></td>
 									</tr>
 								</c:forEach>
 							</tbody>

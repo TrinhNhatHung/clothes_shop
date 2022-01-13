@@ -64,7 +64,7 @@ body {
 	display: flex;
 	justify-content: space-between !important;
 	padding: 10px;
-    align-items: center
+	align-items: center
 }
 
 .header-right {
@@ -87,8 +87,8 @@ body {
 }
 
 .sliderbar {
-    background-color: white;
-    padding: 10px 0px
+	background-color: white;
+	padding: 10px 0px
 }
 
 .slider-footer {
@@ -97,51 +97,53 @@ body {
 
 .row-sliderbar {
 	border-top: solid 0.5px #f2f2f2;
-    border-bottom: solid 0.5px #f2f2f2;
-    padding: 15px 0px;
-    margin: 0px 20px;
-
+	border-bottom: solid 0.5px #f2f2f2;
+	padding: 15px 0px;
+	margin: 0px 20px;
 }
 
 .row-sliderbar-footer {
-    margin: 20px 0;
+	margin: 20px 0;
 }
 
 .notice {
-    position: absolute;
-    background-color: #d9121f;
-    color: var(--white-color);
-    padding: 1px 6px;
-    font-size: 10px;
-    border-radius: 50%;
-    top: -8px;
-    left: 108px;
+	position: absolute;
+	background-color: #d9121f;
+	color: var(- -white-color);
+	padding: 1px 6px;
+	font-size: 10px;
+	border-radius: 50%;
+	top: -8px;
+	left: 108px;
 }
 
 .fi-rs-angle-left {
-    font-size: 16px !important;
-    font-weight: 600;
+	font-size: 16px !important;
+	font-weight: 600;
 }
 
 .col-2 span {
-    font-size: 16px;
+	font-size: 16px;
 }
+
 .col-5 span {
-    font-size: 16px;
+	font-size: 16px;
 }
+
 .col-3 img {
-    position: relative;
-    height: 100px;
-    width: 100px
+	position: relative;
+	height: 100px;
+	width: 100px
 }
 
 .summary {
-    border-bottom: 1px solid #000;
-    padding: 10px 5px;
+	border-bottom: 1px solid #000;
+	padding: 10px 5px;
 }
+
 .summary-heading {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .total {
@@ -150,11 +152,23 @@ body {
 
 .item-name {
 	text-decoration: none;
-	color : #000000
+	color: #000000
 }
 
 .item-name:hover {
 	text-decoration: none
+}
+
+button.btn-confirm {
+	background-color: #000;
+	color: #fff;
+	font-size: 1.1em
+}
+
+button.btn-confirm:hover {
+	color: #fff;
+	background-color: #383838;
+	font-size: 1.1em
 }
 </style>
 <body>
@@ -167,18 +181,22 @@ body {
 					Trở lại
 				</a>
 			</div>
-			<div class="header-right">ID đơn hàng. ${order.id } - <span>${order.status.status }</span></div>
+			<div class="header-right">
+				ID đơn hàng. ${order.id } - <span>${order.status.status }</span>
+			</div>
 		</div>
 		<div class="sliderbar">
 			<div class="sliderbar-content">
 				<c:forEach items="${order.orderDetails }" var="orderDetail">
 					<div class="row row-sliderbar">
 						<div class="col-3">
-							<a href="${contextPath }/item-detail/${orderDetail.item.id}"><img src="${orderDetail.item.linkImage }" alt="" width="80%"></a>
-							<span class="notice">${orderDetail.quantity }</span>
+							<a href="${contextPath }/item-detail/${orderDetail.item.id}"><img
+								src="${orderDetail.item.linkImage }" alt="" width="80%"></a> <span
+								class="notice">${orderDetail.quantity }</span>
 						</div>
 						<div class="col-5">
-							<a class="item-name" href="${contextPath }/item-detail/${orderDetail.item.id}"><h5>${orderDetail.item.name }</h5></a>
+							<a class="item-name"
+								href="${contextPath }/item-detail/${orderDetail.item.id}"><h5>${orderDetail.item.name }</h5></a>
 						</div>
 						<div class="col-2">
 							<span>SL: ${orderDetail.quantity }</span>
@@ -197,6 +215,18 @@ body {
 						</div>
 						<div class="col-2 text-right">
 							<span>${totalBill }đ</span>
+						</div>
+						<div class="col" style="text-align: right">
+							<form:form action="${contextPath }/purchase/deliveryConfirm"
+								method="POST">
+								<input type="hidden" name="url"
+									value="purchase/order/${order.id }">
+								<input type="hidden" value="${order.id }" name="orderId">
+								<c:if test="${order.status.id == 2 }">
+									<button class="btn btn-confirm" type="submit">Xác nhận
+										giao hàng</button>
+								</c:if>
+							</form:form>
 						</div>
 					</div>
 				</div>

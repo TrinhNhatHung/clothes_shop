@@ -32,6 +32,10 @@ i.icon {
 i.icon:hover {
 	color: #dc3545;
 }
+
+.logo {
+	height: 55px
+}
 </style>
 <body>
 	<div class="overlay hidden"></div>
@@ -82,42 +86,6 @@ i.icon:hover {
 	<!-- header -->
 	<header class="header">
 		<div class="container">
-			<div class="top-link clearfix hidden-sm hidden-xs">
-				<div class="row">
-					<div class="col-6 social_link">
-						<div class="social-title">Theo dõi:</div>
-						<a href="https://www.facebook.com/tien.nquyen.77"><i
-							class="fab fa-facebook"
-							style="font-size: 24px; margin-right: 10px"></i></a> <a
-							href="https://www.facebook.com/tien.nquyen.77"><i
-							class="fab fa-instagram"
-							style="font-size: 24px; margin-right: 10px; color: pink;"></i></a> <a
-							href="https://www.facebook.com/tien.nquyen.77"><i
-							class="fab fa-youtube"
-							style="font-size: 24px; margin-right: 10px; color: red;"></i></a> <a
-							href="https://www.facebook.com/tien.nquyen.77"><i
-							class="fab fa-twitter"
-							style="font-size: 24px; margin-right: 10px"></i></a>
-					</div>
-					<div class="col-6 login_link">
-						<ul class="header_link right m-auto">
-							<security:authorize access="isAuthenticated()">
-								<li><i class="fas fa-user mr-3"></i> <security:authentication
-										property="principal.username" /></li>
-							</security:authorize>
-							<security:authorize access="!isAuthenticated()">
-								<li><a href="${pageContext.request.contextPath}/login"><i
-										class="fas fa-sign-in-alt mr-3"></i>Đăng nhập</a></li>
-							</security:authorize>
-
-							<li><a href="${pageContext.request.contextPath}/signup"><i
-									class="fas fa-user-plus mr-3" style="margin-left: 10px;"></i>Đăng
-									kí</a></li>
-						</ul>
-
-					</div>
-				</div>
-			</div>
 			<div class="header-main clearfix">
 				<div class="row">
 					<div class="col-lg-3 col-100-h">
@@ -125,7 +93,7 @@ i.icon:hover {
 							<i class="fas fa-bars"></i>
 						</div>
 						<div class="logo">
-							<a href="${contextPath}"> <img
+							<a href="${contextPath}"> <img class="logo"
 								src="${contextPath}/resources/assets/img/logo/logomain.png"
 								alt="">
 							</a>
@@ -139,52 +107,11 @@ i.icon:hover {
 						</div>
 					</div>
 					<div class="col-lg-6 m-auto pdt15">
-						<form class="example">
-							<input type="text" class="input-search" placeholder="Tìm kiếm.."
-								name="search" id="searchInput">
-							<button type="button" class="search-btn"
-								onclick="searchItems('${contextPath}')">
-								<i class="fa fa-search"></i>
-							</button>
-						</form>
+						
 					</div>
 					<div class="col-3 m-auto hidden-sm hidden-xs">
 						<div class="item-car clearfix d-flex align-items-center">
-							<security:authorize access='hasRole("ADMIN")'>
-								<a href="${contextPath }/admin"
-									class="header__second__cart--icon" data-toggle="tooltip"
-									data-placement="bottom" title="Admin"> <i
-									class="fas fa-user-shield icon"></i>
-								</a>
-							</security:authorize>
-							<security:authorize access='hasRole("CUSTOMER")'>
-								<a href="${contextPath }/purchase"
-									class="header__second__cart--icon" data-toggle="tooltip"
-									data-placement="bottom" title="Đơn mua"> <i
-									class="fas fa-file-invoice icon"></i>
-								</a>
-							</security:authorize>
-
-							<security:authorize access='hasRole("STAFF")'>
-								<a href="${contextPath }/employee"
-									class="header__second__cart--icon" data-toggle="tooltip"
-									data-placement="bottom" title="Xác nhận đơn"> <i
-									class="fas fa-file-invoice icon"></i>
-								</a>
-							</security:authorize>
-							<security:authorize
-								access='hasRole("CUSTOMER") || !isAuthenticated()'>
-								<a href="${contextPath }/cart"
-									class="header__second__cart--icon" data-toggle="tooltip"
-									data-placement="bottom" title="Giỏ hàng"> <i
-									class="fas fa-shopping-cart icon"></i> <security:authorize
-										access="isAuthenticated()">
-										<span id="header__second__cart--notice"
-											class="header__second__cart--notice">${quantityCart }</span>
-									</security:authorize>
-								</a>
-							</security:authorize>
-
+						
 							<security:authorize access="isAuthenticated()">
 								<form:form action="${contextPath }/logout" method="POST"
 									class="header__second__cart--icon logout">
