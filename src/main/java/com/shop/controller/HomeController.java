@@ -41,6 +41,9 @@ public class HomeController {
 			page = 0;
 		}
 		List<Item> items = itemService.getItemsInPage(sort, page);
+		items.forEach(item -> {
+			System.out.println(item.getStatus());
+		});
 		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
 		int sizePage = itemService.getSizePage("", "", "", "", 0, sort, "");
 		model.addAttribute("items", items);

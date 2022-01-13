@@ -70,10 +70,21 @@ public class OrderService {
 
 		return orderDao.getTotalPage();
 	}
+	
+	@Transactional
+	public int getTotalPage(String search) {
+
+		return orderDao.getTotalPage(search);
+	}
 
 	@Transactional
 	public List<Order> getOrderPerPage(int offset, int recordsPerPage) {
 		return orderDao.getOrderPerPage(offset, recordsPerPage);
+	}
+	
+	@Transactional
+	public List<Order> getOrderPerPage(String search, int offset, int recordsPerPage) {
+		return orderDao.getOrderPerPage(search, offset, recordsPerPage);
 	}
 
 	@Transactional
@@ -85,4 +96,6 @@ public class OrderService {
 		orderDao.deleteOrder(id);
 
 	}
+
+	
 }

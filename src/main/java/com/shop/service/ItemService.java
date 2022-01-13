@@ -67,8 +67,28 @@ public class ItemService {
 		return item;
 	}
 
+	@Transactional
 	public List<Size> getSizes(int id) {
 		return itemDao.getSizes(id);
 	}
 
+	@Transactional
+	public int getTotalPage(String name) {
+		return itemDao.getTotalPage(name);
+	}
+
+	@Transactional
+	public List<Item> getItems(String name, int offset, int recordsPerPage) {
+		return itemDao.getItems(name, offset, recordsPerPage);
+	}
+	
+	@Transactional
+	public void insertAndUpdate(Item item) {
+		itemDao.insertOrUpdate(item);
+	}
+
+	@Transactional
+	public void deleteItem(int id) {
+		itemDao.deleteItem(id);
+	}
 }

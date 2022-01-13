@@ -56,6 +56,22 @@ public class ItemSize {
 		this.quantity = quantity;
 	}
 
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+
 	@Override
 	public String toString() {
 		return "ItemSize [id=" + id + ", quantity=" + quantity + "]";

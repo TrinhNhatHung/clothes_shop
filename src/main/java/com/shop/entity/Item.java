@@ -2,6 +2,7 @@ package com.shop.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "mathang")
@@ -24,22 +26,29 @@ public class Item {
 	private Integer id;
 
 	@Column(name = "tenmathang")
+	@NotNull(message = "Bắt buộc")
 	private String name;
 
 	@Column(name = "giaban")
+	@NotNull(message = "Bắt buộc")
 	private Integer outPrice;
 
 	@Column(name = "giamua")
+	@NotNull(message = "Bắt buộc")
 	private Integer inPrice;
 
 	@Column(name = "mota")
 	private String description;
 
 	@Column(name = "giamgia")
+	@NotNull(message = "Bắt buộc")
 	private Integer discount;
 
 	@Column(name = "hinhanh")
 	private String image;
+	
+	@Column(name = "trangthai")
+	private Boolean status;
 
 	@Transient
 	private String linkImage;
@@ -49,7 +58,7 @@ public class Item {
 	private ItemGroup itemGroup;
 	
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL)
 	private List<ItemSize> itemSizes;
 	
 	public Item() {
@@ -57,7 +66,7 @@ public class Item {
 	}
 
 	public Item(Integer id, String name, Integer outPrice, Integer inPrice, String description, Integer discount,
-			String image, ItemGroup itemGroup) {
+			String image, Boolean status, ItemGroup itemGroup) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -66,6 +75,7 @@ public class Item {
 		this.description = description;
 		this.discount = discount;
 		this.image = image;
+		this.status = status;
 		this.itemGroup = itemGroup;
 	}
 
@@ -125,6 +135,14 @@ public class Item {
 		this.image = image;
 	}
 
+	public Boolean getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+	
 	public ItemGroup getItemGroup() {
 		return itemGroup;
 	}

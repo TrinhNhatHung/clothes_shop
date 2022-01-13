@@ -103,51 +103,56 @@
 						<c:forEach var="item" items="${items}">
 
 
-							<div class="col-lg-4 col-md-6 col-12 mb-20"
-								style="margin-bottom: 20px">
-								<a href="${contextPath}/item-detail/${item.id}"
-									class="product__new-item">
-									<div class="card" style="width: 100%">
-										<div>
-											<img class="card-img-top" src="${item.linkImage}"
-												alt="Card image cap">
-											<form:form action="${contextPath }/addToCart" method="POST" class="hover-icon hidden-sm hidden-xs">
-												<input type="hidden" name="queryString" value="<%= request.getQueryString()%>">
-												<input type="hidden" name="url" value="${url }">
-												<input type="hidden" name="itemId" value ="${item.id }"> <button type="submit"
-													class="btn-add-to-cart" title="Mua ngay"> <i
-													class="fas fa-cart-plus"></i>
-												</button>
-											</form:form>
-										</div>
-										<div class="card-body">
-											<h5 class="card-title custom__name-product">${item.name}</h5>
-											<div class="product__price">
-												<p class="card-text price-color product__price-new"">
-													<script type="text/javascript">
+							<c:if test="${item.status == true}">
+								<div class="col-lg-4 col-md-6 col-12 mb-20"
+									style="margin-bottom: 20px">
+									<a href="${contextPath}/item-detail/${item.id}"
+										class="product__new-item">
+										<div class="card" style="width: 100%">
+											<div>
+												<img class="card-img-top" src="${item.linkImage}" style="height: 256px; width: 256px; object-fit: contain;"
+													alt="Card image cap">
+												<form:form action="${contextPath }/addToCart" method="POST"
+													class="hover-icon hidden-sm hidden-xs">
+													<input type="hidden" name="queryString"
+														value="<%=request.getQueryString()%>">
+													<input type="hidden" name="url" value="${url }">
+													<input type="hidden" name="itemId" value="${item.id }">
+													<button type="submit" class="btn-add-to-cart"
+														title="Mua ngay">
+														<i class="fas fa-cart-plus"></i>
+													</button>
+												</form:form>
+											</div>
+											<div class="card-body">
+												<h5 class="card-title custom__name-product">${item.name}</h5>
+												<div class="product__price" style="height: 24px">
+													<p class="card-text price-color product__price-new">
+														<script type="text/javascript">
 														var newOutPrice = ${item.outPrice} * (100 - ${item.discount}) / 100;
 														document.write(newOutPrice)
 													</script>
-													đ
-												</p>
-												<c:if test="${item.discount != 0 }">
-													<p class="card-text price-color product__price-old">
-													${item.outPrice}đ</p>
-												</c:if>
+														đ
+													</p>
+													<c:if test="${item.discount != 0 }">
+														<p class="card-text price-color product__price-old">
+															${item.outPrice}đ</p>
+													</c:if>
 
-												
-											</div>
 
-											<c:if test="${item.discount != 0 }">
-												<div class="sale-off" id="div-discount">
-													<span class="sale-off-percent">${item.discount}%</span> <span
-														class="sale-off-label">GIẢM</span>
 												</div>
-											</c:if>
+
+												<c:if test="${item.discount != 0 }">
+													<div class="sale-off" id="div-discount">
+														<span class="sale-off-percent">${item.discount}%</span> <span
+															class="sale-off-label">GIẢM</span>
+													</div>
+												</c:if>
+											</div>
 										</div>
-									</div>
-								</a>
-							</div>
+									</a>
+								</div>
+							</c:if>
 
 						</c:forEach>
 					</div>
@@ -201,7 +206,7 @@ if(discount.innerHTML === '0%'){
 	setSearch();
 
 	function searchItems(path) {
-		console.log(path)
+		console.log(path+"++++++++++")
 		var ele = document.getElementsByName('optradio');
 		var price;
 		console.log("======")

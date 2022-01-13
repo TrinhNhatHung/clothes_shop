@@ -165,7 +165,8 @@ i.icon:hover {
 									class="fas fa-file-invoice icon"></i>
 								</a>
 							</security:authorize>
-							<security:authorize access='hasRole("CUSTOMER") || !isAuthenticated()'>
+							<security:authorize
+								access='hasRole("CUSTOMER") || !isAuthenticated()'>
 								<a href="${contextPath }/cart"
 									class="header__second__cart--icon" data-toggle="tooltip"
 									data-placement="bottom" title="Giỏ hàng"> <i
@@ -174,6 +175,14 @@ i.icon:hover {
 										<span id="header__second__cart--notice"
 											class="header__second__cart--notice">${quantityCart }</span>
 									</security:authorize>
+								</a>
+							</security:authorize>
+
+							<security:authorize access='hasRole("ADMIN")'>
+								<a href="${contextPath }/admin"
+									class="header__second__cart--icon" data-toggle="tooltip"
+									data-placement="bottom" title="Admin"> <i
+									class="fas fa-user-shield icon"></i>
 								</a>
 							</security:authorize>
 
