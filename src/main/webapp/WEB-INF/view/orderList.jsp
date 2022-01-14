@@ -31,11 +31,31 @@
 	white-space: nowrap;
 	width: 100px
 }
+
+.table .title-order th {
+	font-size: 1.9em !important;
+}
+
+.value-order td h5 {
+	font-size: 1.7em !important
+}
+
+.action-btn {
+	height: 35px !important;
+	width: 35px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+button.action-btn i.fa {
+	font-size: small;
+}
 </style>
 
 <body>
 
-	<div class="container-fluid mb-18">
+	<div class="container mb-18">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="ca rounded shadow" style="background-color: white;">
@@ -77,33 +97,33 @@
 										<td><span class="text-muted">${order.createAt}</span><br></td>
 										<td><span class="text-muted">${order.status.status}</span><br></td>
 
-										<td>
+										<td class="d-flex">
 											<button type="button"
-												class="btn btn-outline-info btn-circle btn-lg btn-circle"
+												class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle"
 												onclick="showListItem(${order.id})">
 												<i class="fa fa-info"></i>
 											</button> <c:choose>
 												<c:when test="${order.status.status == 'Chờ xác nhận'}">
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
 														onclick="showAdd(${order.id})">
 														<i class="fa fa-check"></i>
 													</button>
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
 														onclick="showDelete(${order.id})">
 														<i class="fa fa-trash"></i>
 													</button>
 												</c:when>
 												<c:otherwise>
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
 														disabled
 														onclick="showAdd(${order.id})">
 														<i class="fa fa-check"></i>
 													</button>
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
 														disabled
 														onclick="showDelete(${order.id})">
 														<i class="fa fa-trash"></i>

@@ -60,7 +60,7 @@ public class AdminController {
 			@RequestParam(name = "id", defaultValue = "-1") int id,
 			@RequestParam(name = "type", defaultValue = "null") String type, Model model) {
 		model.addAttribute("url", "items");
-		
+
 		int totalRecords = itemService.getTotalPage(name);
 
 		int recordsPerPage = CONFIRURABLE_RECORDS_PER_PAGE;
@@ -84,7 +84,7 @@ public class AdminController {
 	public String updateItem(@RequestParam("id") int id, Model model) {
 		model.addAttribute("url", "items");
 		Item item = itemService.getById(id);
-		System.out.println(item.getId() + " : " + item.getLinkImage() + " : " + item.getImage());
+		model.addAttribute("linkImage", item.getLinkImage());
 		model.addAttribute("item", item);
 		model.addAttribute("itemGroupCurrent", item.getItemGroup().getName());
 		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
@@ -94,13 +94,14 @@ public class AdminController {
 		List<Size> sizes = sizeService.getAll();
 		model.addAttribute("sizes", sizes);
 		model.addAttribute("type", "update");
-		return "addItem";
+		return "updateItem";
 	}
 
 	@GetMapping("/items/add")
 	public String addItem(Model model) {
 		model.addAttribute("url", "items");
 		model.addAttribute("item", new Item());
+
 		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
 		model.addAttribute("itemGroups", itemGroups);
 		List<Size> sizes = sizeService.getAll();
@@ -111,13 +112,12 @@ public class AdminController {
 
 	@PostMapping(value = "/items/save")
 	public String saveItem(@Valid @ModelAttribute("item") Item item, BindingResult bindingResult,
-			@RequestParam(name = "itemGroupId") Integer itemGroupId,
-			@RequestParam(name = "type") String type,
+			@RequestParam(name = "itemGroupId") Integer itemGroupId, @RequestParam(name = "type") String type,
 			@RequestParam(name = "sizeId") List<String> sizeIds,
 			@RequestParam(name = "quantity") List<Integer> quantities,
 			@RequestParam(name = "imageFile", required = false) MultipartFile file, Model model) {
 		model.addAttribute("url", "items");
-		
+
 		if (bindingResult.hasErrors()) {
 			System.out.println("ERROR" + bindingResult);
 			System.out.println("ERROR");
@@ -134,8 +134,6 @@ public class AdminController {
 				String filename = firebaseUtil.uploadFile(file);
 				item.setImage(filename);
 			}
-			
-			System.out.println("ITEM: " + item.getImage() + " : " + item.getLinkImage());
 
 			ItemGroup itemGroup = new ItemGroup();
 			itemGroup.setId(itemGroupId);
@@ -153,7 +151,6 @@ public class AdminController {
 				itemSizes.add(itemSize);
 			}
 			item.setItemSizes(itemSizes);
-			System.out.println("HHH: " + item.getDiscount());
 			itemService.insertAndUpdate(item);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -194,7 +191,7 @@ public class AdminController {
 	}
 
 	@GetMapping("orders/delete/{id}")
-	public String deleteOrder(Model model,RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
+	public String deleteOrder(Model model, RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
 		model.addAttribute("url", "orders");
 		orderService.deletOrder(id);
 		redirectAttributes.addAttribute("id", id);
@@ -210,7 +207,7 @@ public class AdminController {
 		redirectAttributes.addAttribute("type", "delete");
 		return "redirect:/admin/items";
 	}
-	
+
 	@Autowired
 	private ItemService itemService;
 

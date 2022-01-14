@@ -127,18 +127,11 @@ body {
 	height: 38px !important;
 	padding: 6px 12px 6px 12px;
 	box-sizing: border-box;
-	margin-right: 10px
+	margin-right: 10px;
 }
 
 .font-size-lable {
 	font-size: 18px;
-}
-
-select {
-	height: 40px;
-	width: 100px;
-	font-size: 18px;
-	border-radius: 4px;
 }
 
 a.link-in-btn {
@@ -168,9 +161,14 @@ a.link-in-btn:hover {
 	justify-content: center;
 	align-items: center;
 }
+
+.form-control {
+	font-size: 16px !important;
+}
 </style>
 
 <body>
+
 	<div class="row">
 		<div class="side-bar col-2">
 			<%@ include file="adminSidebar.jsp"%>
@@ -181,9 +179,13 @@ a.link-in-btn:hover {
 				<ul class="nav-tab nav justify-content-center">
 					<li class="nav-item"><a class="nav-link" aria-current="page"
 						href="${contextPath }/admin/items">Tất cả sản phẩm</a></li>
+
+					<li class="nav-item"><a class="nav-link" aria-current="page"
+						href="${contextPath }/admin/items/add">Thêm sản phẩm</a></li>
+
 					<li class="nav-item active"><a class="nav-link active"
-						aria-current="page" href="${contextPath }/admin/item/add">Thêm
-							sản phẩm</a></li>
+						aria-current="page" href="">Cập nhật sản phẩm</a></li>
+
 				</ul>
 				<form:form action="save" modelAttribute="item" method="POST"
 					enctype="multipart/form-data">
@@ -194,11 +196,13 @@ a.link-in-btn:hover {
 									class="d-flex flex-column align-items-center text-center p-3 py-5">
 									<img class="mt-5" alt="Ảnh sản phẩm" id="output"
 										style="width: 300px; min-height: 300px; border: 1px solid; object-fit: contain;"
-										src=""> <input type="file" name="imageFile"
+										src="${linkImage }"> <input type="file" name="imageFile"
 										style="font-size: 15px; margin: 15px 0"
 										onchange="loadFile(event)">
-									<form:input path="image" type="hidden" value="" />
-
+									<form:input path="image" type="hidden" />
+									<span class="font-size-lable">Mã SP
+										<form:input path="id" type="text" class="form-control input-size text-center" readonly="true"/>
+									</span>
 								</div>
 							</div>
 							<div class="col-md-8 border-right">
@@ -212,7 +216,7 @@ a.link-in-btn:hover {
 										<div class="col-md-12">
 											<label class="labels font-size-lable">Tên</label>
 											<form:input type="text" class="form-control input-size"
-												placeholder="Tên" path="name" value="" />
+												placeholder="Tên" path="name" />
 											<form:errors path="name" class="text-danger h4" />
 										</div>
 
@@ -221,7 +225,7 @@ a.link-in-btn:hover {
 										<div class="col-md-6">
 											<label for="itemGroup" class="font-size-lable">Loại
 												hàng</label> <br> <select name="itemGroupId" id="itemGroup"
-												class="bg-light">
+												class="bg-light form-control">
 												<c:forEach items="${itemGroups }" var="itemGroup">
 													<c:choose>
 														<c:when test="${itemGroupCurrent == itemGroup.name}">
@@ -302,7 +306,7 @@ a.link-in-btn:hover {
 									<div class="mt-5 text-center">
 										<input class="btn btn-primary profile-button" type="submit"
 											style="height: 40px; width: 200px; font-size: 18px;"
-											value="Thêm sản phẩm"></input>
+											value="Cập nhật sản phẩm"></input>
 									</div>
 								</div>
 							</div>

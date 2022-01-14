@@ -38,6 +38,7 @@
 body {
 	background: #edf1f5 !important;
 }
+
 .nav.nav-tab {
 	background-color: white;
 	margin: 10px 0px;
@@ -112,6 +113,28 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+
+.action-btn {
+	height: 35px !important;
+	width: 35px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	border-radius: 100% !important
+}
+
+.table .title-order th {
+	font-size: 1.9em !important;
+}
+
+.value-order td h5 {
+	font-size: 1.7em !important
+}
+
+button.action-btn i.fa {
+	font-size: small;
+}
+
 </style>
 
 <body>
@@ -176,14 +199,14 @@ body {
 															<span>${itemSize.id.sizeId}(${itemSize.quantity});</span>
 														</c:forEach>
 												</span> <br></td>
-												<td>
+												<td class="d-flex">
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
 														onclick="showAdd(${item.id})">
 														<i class="fa fa-edit"></i>
 													</button>
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
 														onclick="showDelete(${item.id})">
 														<i class="fa fa-trash"></i>
 													</button>
