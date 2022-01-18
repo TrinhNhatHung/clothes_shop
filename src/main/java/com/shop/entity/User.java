@@ -55,10 +55,13 @@ public class User {
 	@Column(name = "gender")
 	@NotNull(message = "Bắt buộc")
 	private String gender;
-	
+
 	@Column(name = "createAt")
 	@CreationTimestamp
 	private LocalDate createAt;
+
+	@Column(name = "enable")
+	private Boolean enable;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id", referencedColumnName = "role_id")
@@ -114,6 +117,22 @@ public class User {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public LocalDate getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(LocalDate createAt) {
+		this.createAt = createAt;
+	}
+
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
 	}
 
 	public String getPassword() {

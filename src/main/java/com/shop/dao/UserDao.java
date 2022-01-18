@@ -80,7 +80,7 @@ public class UserDao extends EntityDao<User> {
 		int month = time.getMonthValue();
 		int year = time.getYear();
 
-		String sql = "SELECT DISTINCT(u.username), u.fullname, u.phone, u.gender,u.address,u.createAt, u.password, u.role_id FROM user u\n"
+		String sql = "SELECT DISTINCT(u.username), u.fullname, u.phone, u.gender,u.address,u.createAt, u.password, u.role_id,u.enable FROM user u\n"
 				+ "JOIN donhang dh ON dh.khach_hang = u.username\n" + "JOIN role r ON r.role_id = u.role_id \n"
 				+ "WHERE r.name = :roleName AND month(ngay_tao) = :month AND year(ngay_tao) = :year";
 
@@ -88,5 +88,12 @@ public class UserDao extends EntityDao<User> {
 		query.setParameter("roleName", Role.ROLE_CUSTOMER).setParameter("month", month).setParameter("year", year);
 
 		return query.getResultList();
+	}
+	
+	public void disableUser(String username) {
+		String sql = "UPDATE user SET enable = 0 WHERE username = :username";
+		NativeQuery<User> query = getCurrentSession().createNativeQuery(sql, User.class);
+		query.setParameter("username", username);
+		query.executeUpdate();
 	}
 }

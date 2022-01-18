@@ -40,7 +40,7 @@ public class UserController {
 
 	@GetMapping("/access-denied")
 	public String accessDenied() {
-		return "access-denied";
+		return "accessDenied";
 	}
 
 	@GetMapping("/signup")
@@ -61,7 +61,8 @@ public class UserController {
 			model.addAttribute("registrationError", "Username đã tồn tại.");
 			return "signup";
 		}
-
+		
+		user.setEnable(true);
 		user.setRole(roleService.findByName("ROLE_CUSTOMER"));
 		userService.insertOrUpdate(user);
 

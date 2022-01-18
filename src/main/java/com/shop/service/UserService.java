@@ -85,4 +85,9 @@ public class UserService {
 		}
 		return userDtos;
 	}
+	
+	@Transactional
+	public void disableUser(String username) {
+		userDao.disableUser(username);
+	}
 }

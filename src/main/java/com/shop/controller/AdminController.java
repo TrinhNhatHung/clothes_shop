@@ -8,10 +8,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +34,7 @@ import com.shop.entity.Size;
 import com.shop.entity.User;
 import com.shop.service.ItemService;
 import com.shop.service.OrderService;
+import com.shop.service.RoleService;
 import com.shop.service.SizeService;
 import com.shop.service.UserService;
 import com.shop.util.DateUtil;
@@ -52,6 +56,9 @@ public class AdminController {
 	private SizeService sizeService;
 
 	@Autowired
+	private RoleService roleService;
+
+	@Autowired
 	private FirebaseUtil firebaseUtil;
 
 	@GetMapping(path = { "/items" })
@@ -60,6 +67,8 @@ public class AdminController {
 			@RequestParam(name = "id", defaultValue = "-1") int id,
 			@RequestParam(name = "type", defaultValue = "null") String type, Model model) {
 		model.addAttribute("url", "items");
+
+		name = name == null ? "" : name;
 
 		int totalRecords = itemService.getTotalPage(name);
 
@@ -70,7 +79,6 @@ public class AdminController {
 		int offset = (page - 1) * recordsPerPage;
 
 		List<Item> items = itemService.getItems(name, offset, recordsPerPage);
-		System.out.println(totalRecords + "===" + items.size());
 		model.addAttribute("items", items);
 		model.addAttribute("page", page);
 		model.addAttribute("id", id);
@@ -165,7 +173,7 @@ public class AdminController {
 			@RequestParam(value = "type", defaultValue = "null") String type) {
 		model.addAttribute("url", "orders");
 		int totalRecords = orderService.getTotalPage(search);
-		System.out.println("SIZE: " + totalRecords);
+		search = search == null ? "" : search;
 
 		int recordsPerPage = CONFIRURABLE_RECORDS_PER_PAGE;
 
@@ -249,6 +257,7 @@ public class AdminController {
 			@RequestParam(name = "searchText", defaultValue = "") String searchText,
 			@RequestParam(name = "field", defaultValue = "username") String field) {
 		model.addAttribute("url", "customer");
+		searchText = searchText == null ? "" : searchText;
 		List<User> users = userService.getUserByRoleAndSearchCondition("ROLE_CUSTOMER", field, searchText, page);
 		model.addAttribute("users", users);
 
@@ -278,6 +287,7 @@ public class AdminController {
 			@RequestParam(name = "searchText", defaultValue = "") String searchText,
 			@RequestParam(name = "field", defaultValue = "username") String field) {
 		model.addAttribute("url", "employee");
+		searchText = searchText == null ? "" : searchText;
 		List<User> users = userService.getUserByRoleAndSearchCondition("ROLE_STAFF", field, searchText, page);
 		model.addAttribute("users", users);
 
@@ -300,5 +310,73 @@ public class AdminController {
 		}
 		model.addAttribute("previousPage", previousPage);
 		return "adminEmployee";
+	}
+
+	@GetMapping("/employee/delete/{username}")
+	public String deleteEmployee(@PathVariable(name = "username") String username) {
+
+		try {
+			userService.disableUser(username);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/admin/employee";
+	}
+
+	@GetMapping("/employee/add")
+	public String addEmployee(Model model) {
+		model.addAttribute("url", "employee");
+		model.addAttribute("user", new User());
+		model.addAttribute("type", "add");
+		return "addEmployee";
+	}
+
+	@GetMapping("/employee/update/{username}")
+	public String updateEmployee(Model model, @PathVariable(name = "username") String username) {
+		model.addAttribute("url", "employee");
+		User user = userService.findByUsername(username);
+		user.setPasswordConfirmation(user.getPassword());
+		model.addAttribute("user", user);
+		model.addAttribute("type", "update");
+		return "addEmployee";
+	}
+
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+	}
+
+	@PostMapping("/employee/save")
+	public String saveEmployee(@Valid @ModelAttribute(name = "user") User user, BindingResult bindingResult,
+			Model model) {
+		model.addAttribute("url", "employee");
+		if (bindingResult.hasErrors()) {
+			return "addEmployee";
+		}
+
+		User existingUser = userService.findByUsername(user.getUsername());
+		if (existingUser != null) {
+			model.addAttribute("user", user);
+			model.addAttribute("registrationError", "Username đã tồn tại.");
+			return "addEmployee";
+		}
+
+		user.setRole(roleService.findByName("ROLE_STAFF"));
+		userService.insertOrUpdate(user);
+		return "redirect:/admin/employee";
+	}
+
+	@PostMapping("/employee/saveUpdate")
+	public String updateEmployee(@Valid @ModelAttribute(name = "user") User user, BindingResult bindingResult,
+			Model model) {
+		model.addAttribute("url", "employee");
+		if (bindingResult.hasErrors()) {
+			return "addEmployee";
+		}
+
+		user.setRole(roleService.findByName("ROLE_STAFF"));
+		userService.insertOrUpdate(user);
+		return "redirect:/admin/employee";
 	}
 }

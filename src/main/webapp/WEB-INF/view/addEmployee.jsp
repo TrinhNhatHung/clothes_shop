@@ -177,129 +177,107 @@ a.link-in-btn:hover {
 			<div class="container-fluid">
 				<ul class="nav-tab nav justify-content-center">
 					<li class="nav-item"><a class="nav-link" aria-current="page"
-						href="${contextPath }/admin/items">Tất cả sản phẩm</a></li>
-					<li class="nav-item active"><a class="nav-link active"
-						aria-current="page" href="${contextPath }/admin/item/add">Thêm
-							sản phẩm</a></li>
+						href="${contextPath }/admin/employee">Tất cả nhân viên</a></li>
+					<c:if test='${type == "add" }'>
+						<li class="nav-item active"><a class="nav-link active"
+							aria-current="page" href="${contextPath }/admin/employee/add">Thêm
+								nhân viên</a></li>
+					</c:if>
+					<c:if test='${type == "update" }'>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${contextPath }/admin/employee/add">Thêm nhân viên</a></li>
+						<li class="nav-item active"><a class="nav-link active" aria-current="page"
+							>Cập nhật nhân viên</a></li>
+					</c:if>
+
 				</ul>
-				<form:form action="save" modelAttribute="item" method="POST"
-					enctype="multipart/form-data">
+				<c:if test='${type == "add" }'>
+					<c:set var="formUrl" value="admin/employee/save" />
+				</c:if>
+				<c:if test='${type == "update" }'>
+					<c:set var="formUrl" value="admin/employee/saveUpdate" />
+				</c:if>
+				<form:form action="${contextPath }/${formUrl }"
+					modelAttribute="user" method="POST">
 					<div class="container rounded bg-white mt-5 mb-5">
 						<div class="row">
-							<div class="col-md-4 border-right">
-								<div
-									class="d-flex flex-column align-items-center text-center p-3 py-5">
-									<img class="mt-5" alt="Ảnh sản phẩm" id="output"
-										style="width: 300px; min-height: 300px; border: 1px solid; object-fit: contain;"
-										src=""> <input type="file" name="imageFile"
-										style="font-size: 15px; margin: 15px 0"
-										onchange="loadFile(event)">
-									<form:input path="image" type="hidden" value="" />
-
-								</div>
-							</div>
-							<div class="col-md-8 border-right">
+							<div class="col border-right">
 								<div class="p-3 py-5">
 									<div
 										class="d-flex justify-content-between align-items-center mb-3">
 										<h4 class="text-right" style="font-size: 24px">Thông tin
-											sản phẩm</h4>
+											nhân viên</h4>
 									</div>
 									<div class="row mt-2">
-										<div class="col-md-12">
-											<label class="labels font-size-lable">Tên</label>
+										<div class="col-md-6">
+											<label class="labels font-size-lable">Tài khoản</label>
 											<form:input type="text" class="form-control input-size"
-												placeholder="Tên" path="name" value="" />
-											<form:errors path="name" class="text-danger h4" />
+												placeholder="Username" path="username" />
+											<form:errors path="username" class="text-danger h4" />
 										</div>
+										<div class="col-md-6">
+											<label for="itemGroup" class="font-size-lable">Họ tên</label>
+											<form:input type="text" class="form-control input-size"
+												placeholder="Họ tên" path="fullname" />
+											<form:errors path="fullname" class="text-danger h4" />
+										</div>
+									</div>
+									<div class="row mt-3">
+										<div class="col-md-6">
+											<label class="labels font-size-lable">Số điện thoại</label>
+											<form:input type="text" class="form-control input-size"
+												path="phone" placeholder="Số điện thoại" />
+											<form:errors path="phone" class="text-danger h4" />
+										</div>
+										<div class="col-md-6">
+											<label class="labels font-size-lable">Địa chỉ</label>
+											<form:input type="text" class="form-control input-size"
+												path="address" placeholder="Địa chỉ" />
+											<form:errors path="address" class="text-danger h4" />
+										</div>
+									</div>
+									<div class="row mt-3">
+										<div class="col-md-6">
+											<label class="labels font-size-lable">Mật khẩu</label>
+											<form:input type="password" class="form-control input-size"
+												path="password" placeholder="Mật khẩu" />
+											<form:errors path="password" class="text-danger h4" />
+										</div>
+										<div class="col-md-6">
+											<label class="labels font-size-lable">Xác nhận mật
+												khẩu</label>
+											<form:input type="password" class="form-control input-size"
+												path="passwordConfirmation" placeholder="Xác nhận mật khẩu" />
+											<form:errors path="passwordConfirmation"
+												class="text-danger h4" />
+										</div>
+									</div>
 
-									</div>
 									<div class="row mt-3">
 										<div class="col-md-6">
-											<label for="itemGroup" class="font-size-lable">Loại
-												hàng</label> <br> <select name="itemGroupId" id="itemGroup"
-												class="bg-light form-control">
-												<c:forEach items="${itemGroups }" var="itemGroup">
-													<c:choose>
-														<c:when test="${itemGroupCurrent == itemGroup.name}">
-															<option value="${itemGroup.id }" selected>${itemGroup.name }</option>
-														</c:when>
-														<c:otherwise>
-															<option value="${itemGroup.id }">${itemGroup.name }</option>
-														</c:otherwise>
-													</c:choose>
-												</c:forEach>
-											</select>
-										</div>
-										<div class="col-md-6">
-											<label class="labels font-size-lable">Giảm giá(%)</label>
-											<form:input type="number" class="form-control input-size"
-												path="discount" placeholder="Giảm giá" value="" />
-											<form:errors path="discount" class="text-danger h4" />
+											<label class="labels font-size-lable mr-3">Giới tính</label>
+											<form:radiobutton path="gender" class="ml-3" value="Nam" />
+											Nam
+											<form:radiobutton path="gender" class="ml-3" value="Nữ" />
+											Nữ
+											<form:errors path="gender" class="text-danger h4" />
 										</div>
 									</div>
-									<div class="row mt-3">
-										<div class="col-md-6">
-											<label class="labels font-size-lable">Giá mua</label>
-											<form:input type="number" class="form-control input-size"
-												path="inPrice" placeholder="Giá mua" value="" />
-											<form:errors path="inPrice" class="text-danger h4" />
-										</div>
-										<div class="col-md-6">
-											<label class="labels font-size-lable">Giá bán</label>
-											<form:input type="number" class="form-control input-size"
-												value="" path="outPrice" placeholder="Giá bán" />
-											<form:errors path="outPrice" class="text-danger h4" />
-										</div>
-									</div>
-									<div class="row mt-3">
-										<div class="col-md-2">
-											<label class="labels"></label> <br>
-											<div style="margin-top: 12px;" class="font-size-lable">Số
-												lượng</div>
-										</div>
-
-										<c:choose>
-											<c:when test="${itemSizes != null}">
-												<c:forEach items="${itemSizes }" var="itemSizes">
-													<div class="col-md-2">
-														<label class="labels font-size-lable">${itemSizes.id.sizeId }</label>
-														<input type="hidden" name="sizeId"
-															value="${itemSizes.id.sizeId }"> <input
-															name="quantity" type="text"
-															class="form-control input-size" placeholder=""
-															value="${itemSizes.quantity}">
-													</div>
-												</c:forEach>
-											</c:when>
-											<c:otherwise>
-												<c:forEach items="${sizes}" var="size">
-													<div class="col-md-2">
-														<label class="labels font-size-lable">${size.id }</label>
-														<input type="hidden" name="sizeId" value="${size.id }">
-														<input name="quantity" type="text"
-															class="form-control input-size" placeholder="" value="">
-													</div>
-												</c:forEach>
-											</c:otherwise>
-										</c:choose>
-
-									</div>
-									<div class="row mt-3">
-										<div class="col-md-12">
-											<label class="labels font-size-lable">Mô tả</label>
-											<form:textarea path="description"
-												class="form-control col-md-12" rows="3" />
-											<!-- <textarea name="description" id="description"
-										class="form-control col-md-12" rows="3"></textarea> -->
-										</div>
-									</div>
-									<form:input type="hidden" path="status" value="1" />
-									<input type="hidden" name="type" value="${type}" />
+									<c:if test="${registrationError != null}">
+										<div class="text-danger h4">${registrationError}</div>
+									</c:if>
+									<form:input type="hidden" path="enable" value="true" />
 									<div class="mt-5 text-center">
-										<input class="btn btn-primary profile-button" type="submit"
-											style="height: 40px; width: 200px; font-size: 18px;"
-											value="Thêm sản phẩm"></input>
+										<c:if test='${type == "add" }'>
+											<input class="btn btn-primary profile-button" type="submit"
+												style="height: 40px; width: 200px; font-size: 18px;"
+												value="Thêm nhân viên"></input>
+										</c:if>
+										<c:if test='${type == "update" }'>
+											<input class="btn btn-primary profile-button" type="submit"
+												style="height: 40px; width: 200px; font-size: 18px;"
+												value="Cập nhật nhân viên"></input>
+										</c:if>
 									</div>
 								</div>
 							</div>

@@ -48,6 +48,8 @@
 	href="${contextPath}/resources/assets/css/reponsive1.css">
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/style.css">
+<link rel="stylesheet"
+	href="${contextPath}/resources/assets/css/orderList.css">
 <link rel="icon"
 	href="${contextPath}/resources/assets/img/logo/logomain.png"
 	type="image/x-icon" />
@@ -55,6 +57,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 	crossorigin="anonymous"></script>
+
 </head>
 
 <style>
@@ -87,7 +90,7 @@ body {
 	font-size: 1.6em !important;
 }
 
-button.btn {
+button.action-btn {
 	height: 35px !important;
 	width: 35px !important;
 	display: flex;
@@ -95,7 +98,7 @@ button.btn {
 	align-items: center;
 }
 
-button.btn i.fa {
+button.action-btn i.fa {
 	font-size: small;
 }
 
@@ -131,6 +134,35 @@ button.btn-search:hover {
 	height: 30px !important;
 	width: 120px !important
 }
+
+.nav.nav-tab {
+	background-color: white;
+	margin: 10px 0px;
+	border-radius: 3px;
+	display: flex;
+	justify-content: space-between !important;
+}
+
+.nav.nav-tab .nav-item {
+	flex-grow: 1;
+	text-align: center;
+}
+
+.nav.nav-tab .nav-item.active {
+	border-bottom: solid 2px #6c757d;
+	background-color: #fff !important
+}
+
+.nav.nav-tab .nav-item .nav-link {
+	padding: 10px 0px;
+	color: #6c757d;
+	font-size: 1.5em
+}
+
+.nav.nav-tab .nav-item .nav-link.active {
+	color: #212529 !important;
+	font-weight: bold;
+}
 </style>
 <body>
 	<div class="row">
@@ -140,6 +172,13 @@ button.btn-search:hover {
 		<div class="main-content col-10">
 			<%@ include file="adminHeader.jsp"%>
 			<div class="container-fluid mb-18 mt-4">
+				<ul class="nav-tab nav justify-content-center shadow rounded">
+					<li class="nav-item active"><a class="nav-link active"
+						aria-current="page" href="${contextPath }/admin/employee">Tất
+							cả nhân viên</a></li>
+					<li class="nav-item"><a class="nav-link" aria-current="page"
+						href="${contextPath }/admin/employee/add">Thêm nhân viên</a></li>
+				</ul>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="ca rounded shadow" style="background-color: white;">
@@ -180,7 +219,8 @@ button.btn-search:hover {
 												điện thoại</th>
 											<th scope="col" class="border-0 text-uppercase font-medium">Địa
 												chỉ</th>
-											<th scope="col" class="border-0 text-uppercase font-medium"></th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Khả
+												dụng</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -195,11 +235,17 @@ button.btn-search:hover {
 												<td><span class="text-muted table-row">${user.gender}</span><br></td>
 												<td><span class="text-muted table-row">${user.phone}</span><br></td>
 												<td><span class="text-muted table-row">${user.address}</span><br></td>
-												<td>
+												<td><span class="text-muted table-row">${user.enable}</span><br></td>
+												<td class="d-flex">
 													<button type="button"
-														class="btn btn-outline-info btn-circle btn-lg btn-circle"
-														onclick="showListItem()">
-														<i class="fa fa-info"></i>
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
+														onclick="showUpdate('${user.username }')">
+														<i class="fa fa-edit"></i>
+													</button>
+													<button type="button"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle"
+														onclick="showDelete('${user.username }')">
+														<i class="fa fa-trash"></i>
 													</button>
 												</td>
 											</tr>
@@ -240,8 +286,74 @@ button.btn-search:hover {
 						href="${contextPath }/admin/customer?page=${nextPage}<%=url %>"
 						id="nextA">Sau</a></li>
 				</ul>
+				<c:forEach var="user" items="${users}">
+					<div class="modal-shop" id="modal-delete-${user.username}">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Xóa nhân viên</h5>
+								</div>
+								<div class="modal-body">
+									<p>Bạn có muốn xóa nhân viên '${user.fullname }' không ?</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										onclick="closeDelete('${user.username}')">Đóng</button>
+									<form:form
+										action="${contextPath }/admin/employee/delete/${user.username }"
+										method="GET">
+										<button type="submit" class="btn btn-primary">Xoá</button>
+									</form:form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-shop" id="modal-update-${user.username}">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Cập nhật nhân viên</h5>
+								</div>
+								<div class="modal-body">
+									<p>Bạn có muốn cập nhật nhân viên '${user.fullname }' không ?</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										onclick="closeUpdate('${user.username}')">Đóng</button>
+									<form:form
+										action="${contextPath }/admin/employee/update/${user.username }"
+										method="GET">
+										<button type="submit" class="btn btn-primary">Cập nhật</button>
+									</form:form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+	function showDelete(id) {
+		console.log("========= : " + id)
+		document.getElementById("modal-delete-" + id).classList.add("show");
+	}
+
+	function closeDelete(id) {
+		console.log("========= : " + id)
+		document.getElementById("modal-delete-" + id).classList.remove("show");
+	}
+	
+	function showUpdate(id) {
+		console.log("========= : " + id)
+		document.getElementById("modal-update-" + id).classList.add("show");
+	}
+
+	function closeUpdate(id) {
+		console.log("========= : " + id)
+		document.getElementById("modal-update-" + id).classList.remove("show");
+	}
+</script>
 </html>

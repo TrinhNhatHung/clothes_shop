@@ -94,6 +94,7 @@ body {
 	pointer-events: none;
 	opacity: 1;
 	transition: opacity 150ms 200ms ease;
+	z-index: 100 !important;
 }
 
 .context {

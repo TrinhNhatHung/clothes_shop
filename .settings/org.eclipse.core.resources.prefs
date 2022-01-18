@@ -2,6 +2,7 @@
 <<<<<<<=HEAD
 >>>>>>>=187eb17... cart
 eclipse.preferences.version=1
+encoding//src/main/java/com/shop/controller/AdminController.java=UTF-8
 encoding//src/main/java/com/shop/controller/CartController.java=UTF-8
 encoding//src/main/java/com/shop/controller/HomeController.java=UTF-8
 encoding//src/main/java/com/shop/controller/UserController.java=UTF-8
