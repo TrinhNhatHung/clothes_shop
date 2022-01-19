@@ -70,6 +70,10 @@ a.link-in-btn {
 a.link-in-btn:hover {
 	color : black
 }
+
+button {
+	outline :none !important
+}
 </style>
 
 
@@ -147,7 +151,9 @@ a.link-in-btn:hover {
 						<button class="shopnow">
 							<a class="link-in-btn" href="${contextPath }/cart">Mua ngay</a>
 						</button>
-						<button class="add-cart" >Thêm vào giỏ</button>
+						<security:authorize access='hasRole("CUSTOMER")'>
+							<button class="add-cart" >Thêm vào giỏ</button>
+						</security:authorize>
 					</div>
 				</div>
 			</div>

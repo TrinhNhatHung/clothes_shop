@@ -110,7 +110,8 @@
 										class="product__new-item">
 										<div class="card" style="width: 100%">
 											<div>
-												<img class="card-img-top" src="${item.linkImage}" style="height: 256px; width: 256px; object-fit: contain;"
+												<img class="card-img-top" src="${item.linkImage}"
+													style="height: 256px; width: 256px; object-fit: contain;"
 													alt="Card image cap">
 												<form:form action="${contextPath }/addToCart" method="POST"
 													class="hover-icon hidden-sm hidden-xs">
@@ -118,10 +119,12 @@
 														value="<%=request.getQueryString()%>">
 													<input type="hidden" name="url" value="${url }">
 													<input type="hidden" name="itemId" value="${item.id }">
-													<button type="submit" class="btn-add-to-cart"
-														title="Mua ngay">
-														<i class="fas fa-cart-plus"></i>
-													</button>
+													<security:authorize access='hasRole("CUSTOMER")'>
+														<button type="submit" class="btn-add-to-cart"
+															title="Mua ngay">
+															<i class="fas fa-cart-plus"></i>
+														</button>
+													</security:authorize>
 												</form:form>
 											</div>
 											<div class="card-body">

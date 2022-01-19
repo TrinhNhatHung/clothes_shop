@@ -42,6 +42,7 @@ public class CartController {
 		int totalBill = cartService.getTotalBill(carts);
 		model.addAttribute("totalBill", totalBill);
 		model.addAttribute("carts", carts);
+		model.addAttribute("size", carts.size());
 		return "cart";
 	}
 
@@ -54,6 +55,7 @@ public class CartController {
 
 		List<Cart> carts = cartService.getCartsByUsername(username);
 		model.addAttribute("carts", carts);
+		model.addAttribute("size", carts.size());
 		int totalBill = cartService.getTotalBill(carts);
 		model.addAttribute("totalBill", totalBill);
 

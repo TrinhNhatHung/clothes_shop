@@ -115,11 +115,11 @@ form.example::after {
 		<div class="login__form">
 			<div class="row">
 				<div class="col-sm-12 col-lg-6">
-					<form:form action="${contextPath}/authenticate"
+					<form:form action="${contextPath}/processAdminLogin"
 							   method="POST" class="form" id="form-2"
 					>
 						<h3 class="heading">ĐĂNG NHẬP</h3>
-						<a href="${contextPath }/adminLogin" class="form__forgot-password">Đăng nhập dành cho nhân viên và admin.</a>
+						<a href="${contextPath }/login" class="form__forgot-password">Đăng nhập dành khách hàng.</a>
 						<div class="form-group">
 							<label for="username" class="form-label">Username</label> <input
 								id="username" name="username" type="text"
@@ -133,6 +133,14 @@ form.example::after {
 								class="show-hide"><i class="fas fa-eye"
 								onclick="myFunction()"></i></span>
 						</div>
+						
+						<div class="form-group">
+							<label for="role_admin" class="form-label">Admin</label>
+							<input id="role_admin" type="radio" value="ROLE_ADMIN" name="role" checked>
+							<label for="role_staff" class="form-label ml-3">Nhân viên</label>
+							<input id="role_staff" type="radio" value="ROLE_STAFF" name="role">
+						</div>
+						
 						<c:if test="${param.error != null}">
 							<div class="text-danger h4">Invalid username or password.</div>
 						</c:if>
@@ -145,25 +153,6 @@ form.example::after {
 								style="font-size: 16px; margin-left: 10px;"></i>
 						</button>
 					</form:form>
-				</div>
-				<div class="col-sm-12 col-lg-6">
-					<h3 class="heading">TẠO MỘT TÀI KHOẢN</h3>
-					<p class="text-login">Thật dễ dàng tạo một tài khoản. Hãy nhập
-						tài khoản của bạn và điền vào mẫu trên trang tiếp theo đế sở hữu một tài khoản :</p>
-					<ul>
-						<li class="text-login-item"><i class="fas fa-check"></i>
-							<p class="text-login">Các sản phẩm mới nhất</p></li>
-						<li class="text-login-item"><i class="fas fa-check"></i>
-							<p class="text-login">Thanh toán nhanh hơn</p></li>
-						<li class="text-login-item"><i class="fas fa-check"></i>
-							<p class="text-login">Các sự kiện sắp tới</p></li>
-					</ul>
-					<a href="${contextPath}/signup"><button
-							class="form-submit btn-blocker custom-btn"
-							style="border-radius: unset; margin: unset">
-							ĐĂNG KÍ <i class="fas fa-arrow-right"
-								style="font-size: 16px; margin-left: 10px;"></i>
-						</button></a>
 				</div>
 			</div>
 		</div>

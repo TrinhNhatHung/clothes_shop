@@ -63,6 +63,7 @@ public class OrderController {
 
 		List<OrderStatus> orderStatuses = orderStatusService.getAll();
 		model.addAttribute("orderStatuses", orderStatuses);
+		model.addAttribute("size", orders.size());
 		return "purchase";
 	}
 

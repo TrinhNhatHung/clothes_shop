@@ -100,7 +100,8 @@ form.example::after {
 	<div class="content">
 		<div class="wrap">
 			<div class="container">
-				<form:form action="${contextPath }/buy" method="POST" modelAttribute="order">
+				<form:form action="${contextPath }/buy" method="POST"
+					modelAttribute="order">
 					<div class="row">
 						<div class="col-lg-6 col-12">
 							<div class="main">
@@ -117,30 +118,37 @@ form.example::after {
 									<div class="fieldset">
 										<div class="fieldset-address form-group">
 											<label for="diachi" class="form-label" for="">Địa chỉ</label>
-											<input id="diachi" name="address" type="text" class="form-control" value="${user.address}">
-											<span class="form-message"></span>
+											<input id="diachi" name="address" type="text"
+												class="form-control" value="${user.address}"> <span
+												class="form-message"></span>
 										</div>
 										<div class="fieldset-name form-group">
 											<label for="hoten" class="form-label" for="">Họ tên</label> <input
-												id="hoten" name="receiverName" type="text" class="form-control" value="${user.fullname}"> <span
+												id="hoten" name="receiverName" type="text"
+												class="form-control" value="${user.fullname}"> <span
 												class="form-message"></span>
 										</div>
 										<div class="fieldset-phone form-group">
 											<label for="sdt" class="form-label" for="">Số điện
-												thoại</label> <input id="sdt" name="receiverPhone" type="text" class="form-control" value="${user.phone}">
-											<span class="form-message"></span>
+												thoại</label> <input id="sdt" name="receiverPhone" type="text"
+												class="form-control" value="${user.phone}"> <span
+												class="form-message"></span>
 										</div>
 
 									</div>
 								</div>
 								<div class="main-footer">
 									<div class="continue">
-										<a href="${contextPath }/cart"> <i class="fi-rs-angle-left"></i> Giỏ hàng
+										<a href="${contextPath }/cart"> <i
+											class="fi-rs-angle-left"></i> Giỏ hàng
 										</a>
 									</div>
-									<div class="pay">
-										<button type="submit" class="btn-pay form-submit">Thanh toán</button>
-									</div>
+									<c:if test="${size != 0 }">
+										<div class="pay">
+											<button type="submit" class="btn-pay form-submit">Thanh
+												toán</button>
+										</div>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -155,8 +163,8 @@ form.example::after {
 										<input type="hidden" name="carts" value="${cart.item.id }">
 										<div class="row row-sliderbar">
 											<div class="col-4">
-												<img src="${cart.item.linkImage }" alt=""
-													width="80%"> <span class="notice">${cart.quantity }</span>
+												<img src="${cart.item.linkImage }" alt="" width="80%">
+												<span class="notice">${cart.quantity }</span>
 											</div>
 											<div class="col-6">
 												<h5>${cart.item.name }</h5>

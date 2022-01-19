@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,11 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.addFilterBefore(new EncodingFilter(), ChannelProcessingFilter.class);
 		http.authorizeRequests()
-				.antMatchers("/resources/**", "/signup", "/", "/processSignup", "/search", "/item-detail/**").permitAll()
-				.antMatchers("/employee/**").hasRole("STAFF")
+				.antMatchers("/resources/**", "/signup", "/", "/processSignup", "/search", "/item-detail/**", "/adminLogin", "/processAdminLogin").permitAll()
+				.antMatchers("/employee/**").hasAnyRole("STAFF", "ADMIN")
 				.antMatchers("/admin/**").hasRole("ADMIN")
-				.anyRequest().authenticated().and().formLogin().loginPage("/login")
+				.anyRequest().hasRole("CUSTOMER").and().formLogin().loginPage("/login")
 				.failureUrl("/login?error").loginProcessingUrl("/authenticate").permitAll().and().logout().permitAll()
 				.and().exceptionHandling().accessDeniedPage("/access-denied");
 	}

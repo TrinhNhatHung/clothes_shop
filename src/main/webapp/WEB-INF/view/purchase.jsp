@@ -128,6 +128,15 @@ button.btn {
 button.btn i.fa {
 	font-size: small;
 }
+
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
+}
 </style>
 <body>
 	<%@ include file="header.jsp"%>
@@ -161,7 +170,8 @@ button.btn i.fa {
 						<h4 class="card-title text-uppercase mb-0">Đơn hàng của tôi</h4>
 					</div>
 					<div class="table-responsive">
-						<table class="table table-striped table-hover no-wrap user-table mb-0">
+						<table
+							class="table table-striped table-hover no-wrap user-table mb-0">
 							<thead>
 								<tr class="title-order">
 									<th scope="col" class="border-0 text-uppercase font-medium">Mã
@@ -180,6 +190,7 @@ button.btn i.fa {
 								</tr>
 							</thead>
 							<tbody>
+
 								<c:forEach items="${orders }" var="order">
 									<tr class="value-order">
 										<td class="column-cell"><a class="anchor"
@@ -215,7 +226,8 @@ button.btn i.fa {
 													</button>
 												</c:if>
 												<c:if test="${order.status.id != 2 }">
-													<button type="submit" disabled="disabled" title="Xác nhận giao hàng"
+													<button type="submit" disabled="disabled"
+														title="Xác nhận giao hàng"
 														class="btn btn-outline-info btn-circle btn-lg btn-circle ml-1">
 														<i class="fa fa-check"></i>
 													</button>
@@ -225,6 +237,9 @@ button.btn i.fa {
 								</c:forEach>
 							</tbody>
 						</table>
+						<c:if test="${size == 0 }">
+							<div class="no-result">Không tìm thấy kết quả</div>
+						</c:if>
 					</div>
 				</div>
 			</div>

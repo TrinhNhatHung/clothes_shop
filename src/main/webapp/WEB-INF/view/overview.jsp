@@ -210,6 +210,15 @@ button.btn {
 button.btn i.fa {
 	font-size: small;
 }
+
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
+}
 </style>
 <body>
 	<div class="row">
@@ -314,6 +323,9 @@ button.btn i.fa {
 										</c:forEach>
 									</tbody>
 								</table>
+								<c:if test="${sizeOrders == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -371,6 +383,9 @@ button.btn i.fa {
 										</c:forEach>
 									</tbody>
 								</table>
+								<c:if test="${sizeCustomers == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -421,6 +436,9 @@ button.btn i.fa {
 										</c:forEach>
 									</tbody>
 								</table>
+								<c:if test="${sizeItems == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 							</div>
 						</div>
 					</div>

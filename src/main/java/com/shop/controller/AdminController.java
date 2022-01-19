@@ -243,12 +243,16 @@ public class AdminController {
 
 		List<Order> orders = orderService.getOrderByMonth(duration);
 		model.addAttribute("orders", orders);
+		model.addAttribute("sizeOrders", orders.size());
 
 		List<UserDto> userDtos = userService.getCustomerOrderedInMonth(duration);
 		model.addAttribute("userDtos", userDtos);
+		model.addAttribute("sizeCustomers", userDtos.size());
 
 		List<ItemDto> itemDtos = itemService.getSoldItemInMonth(duration);
 		model.addAttribute("itemDtos", itemDtos);
+		model.addAttribute("sizeItems", itemDtos.size());
+		
 		return "overview";
 	}
 

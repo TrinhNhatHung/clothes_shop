@@ -90,14 +90,23 @@ form.form-cart-quantity {
 	display: flex;
 }
 
-form.form-cart-quantity #text_so_luong-1{
-	outline : none;
+form.form-cart-quantity #text_so_luong-1 {
+	outline: none;
 }
 
 button.button-hidden {
 	border: none;
 	background-color: white;
 	outline: none
+}
+
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
 }
 /* Mobile & tablet  */
 @media ( max-width : 1023px) {
@@ -170,38 +179,41 @@ button.button-hidden {
 								</div>
 							</div>
 							<div class="cart-body">
+								<c:if test="${size == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 								<c:forEach items="${carts }" var="cart">
 									<div class="row cart-body-row cart-body-row-1"
 										style="align-items: center;">
 										<div class="col-md-11 col-10" style="text-align: center;">
 											<div class="row card-info" style="align-items: center;">
 												<div class="col-md-2 col-12 card-info-img">
-													<a href="${contextPath }/item-detail/${cart.item.id}"><img class="cart-img"
-														src="${cart.item.linkImage }" alt=""></a>
+													<a href="${contextPath }/item-detail/${cart.item.id}"><img
+														class="cart-img" src="${cart.item.linkImage }" alt=""></a>
 												</div>
 												<div class="col-md-3 col-12">
-													<a href="${contextPath }/item-detail/${cart.item.id}" class="cart-name"><h5>${cart.item.name }</h5></a>
+													<a href="${contextPath }/item-detail/${cart.item.id}"
+														class="cart-name"><h5>${cart.item.name }</h5></a>
 												</div>
 												<div class="col-md-2 col-12" style="font-size: 16px;">
 													<span>${cart.item.outPrice * (100 - cart.item.discount)/100 }</span>
 												</div>
 												<div class="col-md-3 col-12">
 													<div class="cart-quantity">
-														<form:form 
-															class="form-cart-quantity" 
-															action="${contextPath }/changeQuantityCart" 
-															method="POST"
-															id="form-cart-quantity-${cart.item.id }"
-														>
-															<input type="hidden" name="itemId" value="${cart.item.id }">
-															<input type="submit" 
-																   name="action" value="-" class="control"
-																   onclick="changeQuantityCart(event, ${cart.item.id })"
-															>
-															<input id="cart-quantity-${cart.item.id }" 
-																type="text" name="quantity" value="${cart.quantity }"
-																class="text-input" id="text_so_luong-1" readonly="readonly">
-															<input type="submit" name="action" value="+" class="control">
+														<form:form class="form-cart-quantity"
+															action="${contextPath }/changeQuantityCart" method="POST"
+															id="form-cart-quantity-${cart.item.id }">
+															<input type="hidden" name="itemId"
+																value="${cart.item.id }">
+															<input type="submit" name="action" value="-"
+																class="control"
+																onclick="changeQuantityCart(event, ${cart.item.id })">
+															<input id="cart-quantity-${cart.item.id }" type="text"
+																name="quantity" value="${cart.quantity }"
+																class="text-input" id="text_so_luong-1"
+																readonly="readonly">
+															<input type="submit" name="action" value="+"
+																class="control">
 														</form:form>
 													</div>
 												</div>
@@ -240,10 +252,12 @@ button.button-hidden {
 							<div class="cart-total">
 								<label for="">Thành tiền:</label> <span class="total__price">${totalBill }đ</span>
 							</div>
-							<div class="cart-buttons">
-								<a style="display: block; text-align: center;"
-									href="${contextPath }/pay" class="chekout">THANH TOÁN</a>
-							</div>
+							<c:if test="${size != 0 }">
+								<div class="cart-buttons">
+									<a style="display: block; text-align: center;"
+										href="${contextPath }/pay" class="chekout">THANH TOÁN</a>
+								</div>
+							</c:if>
 						</div>
 					</div>
 				</div>
