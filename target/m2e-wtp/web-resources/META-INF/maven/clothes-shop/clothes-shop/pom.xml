@@ -79,13 +79,6 @@
 			<version>${mysql.connector.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>${c3po.version}</version>
-		</dependency>
-
-
 		<!-- Servlet, JSP and JSTL support -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

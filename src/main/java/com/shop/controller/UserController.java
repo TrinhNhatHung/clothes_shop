@@ -80,7 +80,8 @@ public class UserController {
 	}
 
 	@GetMapping("/adminLogin")
-	public String adminLogin() {
+	public String adminLogin(Model model) {
+		model.addAttribute("user", new User());
 		return "adminLogin";
 	}
 

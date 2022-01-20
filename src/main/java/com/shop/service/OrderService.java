@@ -90,8 +90,13 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void changeStatusOrder(int orderId, int statusId) {
-		orderDao.changeStatusOrder(orderId, statusId);
+	public void changeStatusOrder(int orderId, int statusId, String username) {
+		orderDao.changeStatusOrder(orderId, statusId, username);
+	}
+	
+	@Transactional
+	public void customerConfirmDelevery (int orderId, int statusId) {
+		orderDao.customerConfirmDelevery(orderId, statusId);
 	}
 
 	public int getTotalOrderByMonth(LocalDate time) {

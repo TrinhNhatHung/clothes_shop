@@ -51,6 +51,15 @@
 button.action-btn i.fa {
 	font-size: small;
 }
+
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
+}
 </style>
 
 <body>
@@ -63,7 +72,8 @@ button.action-btn i.fa {
 						<h5 class="card-title text-uppercase mb-0">Quản lý đơn hàng</h5>
 					</div>
 					<div class="table-responsive">
-						<table class="table table-hover table-striped no-wrap user-table mb-0">
+						<table
+							class="table table-hover table-striped no-wrap user-table mb-0">
 							<thead>
 								<tr class="title-order">
 									<th scope="col"
@@ -78,6 +88,8 @@ button.action-btn i.fa {
 										đặt</th>
 									<th scope="col" class="border-0 text-uppercase font-medium">Tình
 										trạng</th>
+									<th scope="col" class="border-0 text-uppercase font-medium">Nhân
+										viên</th>
 									<th scope="col" class="border-0 text-uppercase font-medium">Hành
 										động</th>
 								</tr>
@@ -96,13 +108,14 @@ button.action-btn i.fa {
 										<td><span class="text-muted overflow-address">${order.address}</span><br></td>
 										<td><span class="text-muted">${order.createAt}</span><br></td>
 										<td><span class="text-muted">${order.status.status}</span><br></td>
-
+										<td><span class="text-muted">${order.acceptEmployee.username}</span><br></td>
 										<td class="d-flex">
 											<button type="button"
 												class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle"
 												onclick="showListItem(${order.id})">
 												<i class="fa fa-info"></i>
-											</button> <c:choose>
+											</button> 
+											<c:choose>
 												<c:when test="${order.status.status == 'Chờ xác nhận'}">
 													<button type="button"
 														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
@@ -115,22 +128,31 @@ button.action-btn i.fa {
 														<i class="fa fa-trash"></i>
 													</button>
 												</c:when>
-												<c:otherwise>
+												<c:when test="${order.status.status == 'Đang giao'}">
 													<button type="button"
 														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
-														disabled
-														onclick="showAdd(${order.id})">
+														disabled onclick="showAdd(${order.id})">
 														<i class="fa fa-check"></i>
 													</button>
 													<button type="button"
 														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
-														disabled
 														onclick="showDelete(${order.id})">
+														<i class="fa fa-trash"></i>
+													</button>
+												</c:when>
+												<c:otherwise>
+													<button type="button"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														disabled onclick="showAdd(${order.id})">
+														<i class="fa fa-check"></i>
+													</button>
+													<button type="button"
+														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle ml-2"
+														disabled onclick="showDelete(${order.id})">
 														<i class="fa fa-trash"></i>
 													</button>
 												</c:otherwise>
 											</c:choose>
-
 
 										</td>
 									</tr>
@@ -138,6 +160,9 @@ button.action-btn i.fa {
 
 							</tbody>
 						</table>
+						<c:if test="${size == 0 }">
+							<div class="no-result">Không tìm thấy kết quả</div>
+						</c:if>
 					</div>
 				</div>
 			</div>

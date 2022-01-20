@@ -163,6 +163,23 @@ button.btn-search:hover {
 	color: #212529 !important;
 	font-weight: bold;
 }
+
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
+}
+
+.alert .msg {
+	padding: 0 48px !important;
+	font-size: 18px !important;
+	color: #1c974d !important;
+	display: flex !important;
+	margin: auto 0 !important;
+}
 </style>
 <body>
 	<div class="row">
@@ -237,22 +254,39 @@ button.btn-search:hover {
 												<td><span class="text-muted table-row">${user.address}</span><br></td>
 												<td><span class="text-muted table-row">${user.enable}</span><br></td>
 												<td class="d-flex">
-													<button type="button"
-														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
-														onclick="showUpdate('${user.username }')">
-														<i class="fa fa-edit"></i>
-													</button>
-													<button type="button"
-														class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle"
-														onclick="showDelete('${user.username }')">
-														<i class="fa fa-trash"></i>
-													</button>
+													<c:if test="${user.enable }">
+														<button type="button" title="Cập nhật"
+															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
+															onclick="showUpdate('${user.username }')">
+															<i class="fa fa-edit"></i>
+														</button>
+														<button type="button" title="Xóa"
+															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle"
+															onclick="showDelete('${user.username }')">
+															<i class="fa fa-trash"></i>
+														</button>
+													</c:if>
+													<c:if test="${!user.enable }">
+														<button type="button" disabled title="Cập nhật"
+															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
+															onclick="showUpdate('${user.username }')">
+															<i class="fa fa-edit"></i>
+														</button>
+														<button type="button" disabled title="Xóa"
+															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle"
+															onclick="showDelete('${user.username }')">
+															<i class="fa fa-trash"></i>
+														</button>
+													</c:if>
 												</td>
 											</tr>
 										</c:forEach>
 
 									</tbody>
 								</table>
+								<c:if test="${size == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -268,22 +302,22 @@ button.btn-search:hover {
 						url += searchText == null ? "" : ("&searchText=" + searchText);
 					%>
 					<li class="page-item" id="previous"><a class="page-link"
-						href="${contextPath }/admin/customer?page=${previousPage}<%=url %>"
+						href="${contextPath }/admin/employee?page=${previousPage}<%=url %>"
 						id="previousA">Trước</a></li>
 
 					<c:forEach var="i" begin="1" end="${totalPage }">
 						<c:if test="${currentPage == i}">
 							<li class="page-item active"><a class="page-link" id="page"
-								href="${contextPath }/admin/customer?page=${i }<%=url %>">${i }</a></li>
+								href="${contextPath }/admin/employee?page=${i }<%=url %>">${i }</a></li>
 						</c:if>
 						<c:if test="${currentPage != i}">
 							<li class="page-item"><a class="page-link" id="page"
-								href="${contextPath }/admin/customer?page=${i }<%=url %>">${i }</a></li>
+								href="${contextPath }/admin/employee?page=${i }<%=url %>">${i }</a></li>
 						</c:if>
 					</c:forEach>
 
 					<li class="page-item" id="next"><a class="page-link"
-						href="${contextPath }/admin/customer?page=${nextPage}<%=url %>"
+						href="${contextPath }/admin/employee?page=${nextPage}<%=url %>"
 						id="nextA">Sau</a></li>
 				</ul>
 				<c:forEach var="user" items="${users}">
@@ -315,7 +349,8 @@ button.btn-search:hover {
 									<h5 class="modal-title">Cập nhật nhân viên</h5>
 								</div>
 								<div class="modal-body">
-									<p>Bạn có muốn cập nhật nhân viên '${user.fullname }' không ?</p>
+									<p>Bạn có muốn cập nhật nhân viên '${user.fullname }' không
+										?</p>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary"
@@ -323,19 +358,55 @@ button.btn-search:hover {
 									<form:form
 										action="${contextPath }/admin/employee/update/${user.username }"
 										method="GET">
-										<button type="submit" class="btn btn-primary">Cập nhật</button>
+										<button type="submit" class="btn btn-primary">Cập
+											nhật</button>
 									</form:form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
+				<c:if test="${param.username != null}">
+					<div class="abcde"
+						style="position: absolute; top: 10px; right: 2px; width: 500px">
+						<div class="alert show showAlert">
+							<c:if test="${param.type == 'add'}">
+								<span class="fas fa-check-circle"></span>
+								<span class="msg">Thêm nhân viên thành công!</span>
+							</c:if>
+
+							<c:if test="${param.type == 'update'}">
+								<span class="fas fa-check-circle"></span>
+								<span class="msg">Cập nhật thành công!</span>
+							</c:if>
+
+							<c:if test='${param.type == "delete"}'>
+								<span class="fas fa-check-circle"></span>
+								<span class="msg">Xóa nhân viên thành công!</span>
+							</c:if>
+
+							<div class="close-btn">
+								<span class="fas fa-times"></span>
+							</div>
+						</div>
+					</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
 </body>
 
 <script type="text/javascript">
+	setTimeout(function() {
+		$('.alert').removeClass("show");
+		$('.alert').addClass("hide");
+	}, 5000);
+
+	$('.close-btn').click(function() {
+		$('.alert').removeClass("show");
+		$('.alert').addClass("hide");
+	});
+
 	function showDelete(id) {
 		console.log("========= : " + id)
 		document.getElementById("modal-delete-" + id).classList.add("show");
@@ -345,7 +416,7 @@ button.btn-search:hover {
 		console.log("========= : " + id)
 		document.getElementById("modal-delete-" + id).classList.remove("show");
 	}
-	
+
 	function showUpdate(id) {
 		console.log("========= : " + id)
 		document.getElementById("modal-update-" + id).classList.add("show");

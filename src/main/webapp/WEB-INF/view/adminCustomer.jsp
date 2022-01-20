@@ -135,6 +135,15 @@ button.btn-search:hover {
 	justify-content: center;
 	align-items: center;
 }
+
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
+}
 </style>
 <body>
 	<div class="row">
@@ -211,6 +220,9 @@ button.btn-search:hover {
 
 									</tbody>
 								</table>
+								<c:if test="${size == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 							</div>
 						</div>
 					</div>

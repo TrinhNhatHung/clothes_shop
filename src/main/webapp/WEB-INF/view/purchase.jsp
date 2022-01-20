@@ -46,6 +46,8 @@
 	href="${contextPath}/resources/assets/css/style.css">
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/purchase.css">
+<link rel="stylesheet"
+	href="${contextPath}/resources/assets/css/orderList.css">
 <link rel="icon"
 	href="${contextPath}/resources/assets/img/logo/logomain.png"
 	type="image/x-icon" />
@@ -245,5 +247,36 @@ button.btn i.fa {
 			</div>
 		</div>
 	</div>
+	<c:if test="${param.confirm != null}">
+		<div class="abcde"
+			style="position: absolute; top: 10px; right: 2px; width: 500px">
+			<div class="alert show showAlert">
+				<c:if test="${param.confirm == 'success'}">
+					<span class="fas fa-check-circle"></span>
+					<span class="msg">Xác nhận giao hàng thành công</span>
+				</c:if>
+
+				<c:if test="${param.confirm == 'fail'}">
+					<span class="fas fa-check-circle"></span>
+					<span class="msg">Xác nhận giao hàng thất bại</span>
+				</c:if>
+
+				<div class="close-btn">
+					<span class="fas fa-times"></span>
+				</div>
+			</div>
+		</div>
+	</c:if>
 </body>
+<script type="text/javascript">
+	setTimeout(function() {
+		$('.alert').removeClass("show");
+		$('.alert').addClass("hide");
+	}, 5000);
+
+	$('.close-btn').click(function() {
+		$('.alert').removeClass("show");
+		$('.alert').addClass("hide");
+	});
+</script>
 </html>

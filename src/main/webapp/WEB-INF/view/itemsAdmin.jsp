@@ -29,7 +29,9 @@
 	href="${contextPath}/resources/assets/css/base.css">
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/orderList.css">
-
+<link rel="icon"
+	href="${contextPath}/resources/assets/img/logo/main.png"
+	type="image/x-icon" />
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
 </head>
@@ -135,6 +137,22 @@ button.action-btn i.fa {
 	font-size: small;
 }
 
+.no-result {
+	color: gray;
+	text-align: center;
+	background: #edf1f5;
+	margin-top: 10px;
+	padding: 15px 0px;
+	font-size: 1.6em;
+}
+
+.alert .msg {
+        padding: 0 48px !important;
+        font-size: 18px !important;
+        color: #1c974d !important;
+        display: flex !important;
+        margin: auto 0 !important; 
+ }
 </style>
 
 <body>
@@ -216,6 +234,9 @@ button.action-btn i.fa {
 
 									</tbody>
 								</table>
+								<c:if test="${size == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
 							</div>
 						</div>
 					</div>
@@ -278,7 +299,7 @@ button.action-btn i.fa {
 			</c:forEach>
 
 			<c:if test="${id >= 0}">
-				<div class="abcde">
+				<div class="abcde" style="position: absolute; top : 10px; right: 2px; width: 500px">
 					<div class="alert show showAlert">
 						<c:if test="${type == 'add'}">
 							<span class="fas fa-check-circle"></span>
@@ -387,7 +408,7 @@ function searchItems(path) {
 	
 	var path = window.location;
 	
-	var url_string = window.location.href
+	var url_string = window.location.href.split('?')[0];
 	var urlPre = new URL(url_string);
 	var urlNext = new URL(url_string);
 	urlPre.searchParams.set("page", parseInt(page.innerHTML) - 1)

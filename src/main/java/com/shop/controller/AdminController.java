@@ -80,6 +80,7 @@ public class AdminController {
 
 		List<Item> items = itemService.getItems(name, offset, recordsPerPage);
 		model.addAttribute("items", items);
+		model.addAttribute("size", items.size());
 		model.addAttribute("page", page);
 		model.addAttribute("id", id);
 		model.addAttribute("type", type);
@@ -182,6 +183,7 @@ public class AdminController {
 		int offset = (page - 1) * recordsPerPage;
 		List<Order> orders = orderService.getOrderPerPage(search, offset, recordsPerPage);
 		model.addAttribute("orders", orders);
+		model.addAttribute("size", orders.size());
 		model.addAttribute("page", page);
 		model.addAttribute("sizePage", totalPages);
 		model.addAttribute("id", id);
@@ -264,6 +266,7 @@ public class AdminController {
 		searchText = searchText == null ? "" : searchText;
 		List<User> users = userService.getUserByRoleAndSearchCondition("ROLE_CUSTOMER", field, searchText, page);
 		model.addAttribute("users", users);
+		model.addAttribute("size", users.size());
 
 		int totalCustomer = userService.getTotalUserByRoleAndSeachCondition("ROLE_CUSTOMER", field, searchText);
 		int surplus = totalCustomer % 10;
@@ -294,6 +297,7 @@ public class AdminController {
 		searchText = searchText == null ? "" : searchText;
 		List<User> users = userService.getUserByRoleAndSearchCondition("ROLE_STAFF", field, searchText, page);
 		model.addAttribute("users", users);
+		model.addAttribute("size", users.size());
 
 		int totalCustomer = userService.getTotalUserByRoleAndSeachCondition("ROLE_STAFF", field, searchText);
 		int surplus = totalCustomer % 10;
@@ -317,10 +321,12 @@ public class AdminController {
 	}
 
 	@GetMapping("/employee/delete/{username}")
-	public String deleteEmployee(@PathVariable(name = "username") String username) {
+	public String deleteEmployee(@PathVariable(name = "username") String username, RedirectAttributes redirectAttributes) {
 
 		try {
 			userService.disableUser(username);
+			redirectAttributes.addAttribute("username", username);
+			redirectAttributes.addAttribute("type", "delete");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -353,8 +359,9 @@ public class AdminController {
 
 	@PostMapping("/employee/save")
 	public String saveEmployee(@Valid @ModelAttribute(name = "user") User user, BindingResult bindingResult,
-			Model model) {
+			Model model, RedirectAttributes redirectAttributes) {
 		model.addAttribute("url", "employee");
+		model.addAttribute("type", "add");
 		if (bindingResult.hasErrors()) {
 			return "addEmployee";
 		}
@@ -368,12 +375,15 @@ public class AdminController {
 
 		user.setRole(roleService.findByName("ROLE_STAFF"));
 		userService.insertOrUpdate(user);
+		redirectAttributes.addAttribute("username", user.getUsername());
+		redirectAttributes.addAttribute("type", "add");
 		return "redirect:/admin/employee";
 	}
 
 	@PostMapping("/employee/saveUpdate")
 	public String updateEmployee(@Valid @ModelAttribute(name = "user") User user, BindingResult bindingResult,
-			Model model) {
+			Model model, RedirectAttributes redirectAttributes) {
+		model.addAttribute("type", "update");
 		model.addAttribute("url", "employee");
 		if (bindingResult.hasErrors()) {
 			return "addEmployee";
@@ -381,6 +391,8 @@ public class AdminController {
 
 		user.setRole(roleService.findByName("ROLE_STAFF"));
 		userService.insertOrUpdate(user);
+		redirectAttributes.addAttribute("username", user.getUsername());
+		redirectAttributes.addAttribute("type", "update");
 		return "redirect:/admin/employee";
 	}
 }

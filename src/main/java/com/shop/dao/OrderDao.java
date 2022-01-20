@@ -76,10 +76,21 @@ public class OrderDao extends EntityDao<Order> {
 		super.insert(order);
 	}
 
-	public void changeStatusOrder(int orderId, int statusId) {
+	public void changeStatusOrder(int orderId, int statusId, String username) {
+		final String sql = "UPDATE donhang SET ma_ttdh = :statusId, nhan_vien = :username WHERE ma_dh = :orderId";
+		getCurrentSession().createNativeQuery(sql)
+						   .setParameter("orderId", orderId)
+						   .setParameter("statusId", statusId)
+						   .setParameter("username", username)
+						   .executeUpdate();
+	}
+	
+	public void customerConfirmDelevery (int orderId, int statusId) {
 		final String sql = "UPDATE donhang SET ma_ttdh = :statusId WHERE ma_dh = :orderId";
-		getCurrentSession().createNativeQuery(sql).setParameter("orderId", orderId).setParameter("statusId", statusId)
-				.executeUpdate();
+		getCurrentSession().createNativeQuery(sql)
+		   .setParameter("orderId", orderId)
+		   .setParameter("statusId", statusId)
+		   .executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
