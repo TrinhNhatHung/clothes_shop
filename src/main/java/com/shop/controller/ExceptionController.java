@@ -16,7 +16,8 @@ public class ExceptionController {
 	
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = Exception.class)
-	public String intervalError() {
+	public String intervalError(Exception exception) {
+		exception.printStackTrace();
 		return "500";
 	}
 

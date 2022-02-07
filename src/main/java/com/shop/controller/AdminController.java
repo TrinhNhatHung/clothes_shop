@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shop.dto.EmployeeDto;
 import com.shop.dto.ItemDto;
 import com.shop.dto.UserDto;
 import com.shop.entity.Item;
@@ -30,10 +32,12 @@ import com.shop.entity.ItemGroup;
 import com.shop.entity.ItemSize;
 import com.shop.entity.ItemSize.Id;
 import com.shop.entity.Order;
+import com.shop.entity.OrderStatus;
 import com.shop.entity.Size;
 import com.shop.entity.User;
 import com.shop.service.ItemService;
 import com.shop.service.OrderService;
+import com.shop.service.OrderStatusService;
 import com.shop.service.RoleService;
 import com.shop.service.SizeService;
 import com.shop.service.UserService;
@@ -57,7 +61,10 @@ public class AdminController {
 
 	@Autowired
 	private RoleService roleService;
-
+	
+	@Autowired
+	private OrderStatusService orderStatusService;
+	
 	@Autowired
 	private FirebaseUtil firebaseUtil;
 
@@ -194,7 +201,9 @@ public class AdminController {
 	@GetMapping("orders/add/{id}")
 	public String addOrder(Model model, RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
 		model.addAttribute("url", "orders");
-		orderService.addOrder(id);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		OrderStatus orderStatus = orderStatusService.findByStatus(OrderStatus.DELIVERING);
+		orderService.changeStatusOrder(id, orderStatus.getId(), username);
 		redirectAttributes.addAttribute("id", id);
 		redirectAttributes.addAttribute("type", "add");
 		return "redirect:/admin/orders";
@@ -203,7 +212,9 @@ public class AdminController {
 	@GetMapping("orders/delete/{id}")
 	public String deleteOrder(Model model, RedirectAttributes redirectAttributes, @PathVariable("id") int id) {
 		model.addAttribute("url", "orders");
-		orderService.deletOrder(id);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		OrderStatus orderStatus = orderStatusService.findByStatus(OrderStatus.CANCLED);
+		orderService.changeStatusOrder(id, orderStatus.getId(), username);
 		redirectAttributes.addAttribute("id", id);
 		redirectAttributes.addAttribute("type", "delete");
 		return "redirect:/admin/orders";
@@ -254,6 +265,10 @@ public class AdminController {
 		List<ItemDto> itemDtos = itemService.getSoldItemInMonth(duration);
 		model.addAttribute("itemDtos", itemDtos);
 		model.addAttribute("sizeItems", itemDtos.size());
+		
+		List<EmployeeDto> employeeDtos = userService.getEmployeeOverviewInMonth(duration);
+		model.addAttribute("employeeDtos", employeeDtos);
+		model.addAttribute("sizeEmployees", employeeDtos.size());
 		
 		return "overview";
 	}
@@ -332,6 +347,18 @@ public class AdminController {
 		}
 		return "redirect:/admin/employee";
 	}
+	
+	@GetMapping("/employee/trigger/{username}")
+	public String triggerEmployee (@PathVariable(name = "username") String username, RedirectAttributes redirectAttributes) {
+		try {
+			userService.enableUser(username);
+			redirectAttributes.addAttribute("username", username);
+			redirectAttributes.addAttribute("type", "trigger");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/admin/employee";
+	}
 
 	@GetMapping("/employee/add")
 	public String addEmployee(Model model) {
@@ -394,5 +421,36 @@ public class AdminController {
 		redirectAttributes.addAttribute("username", user.getUsername());
 		redirectAttributes.addAttribute("type", "update");
 		return "redirect:/admin/employee";
+	}
+	
+	@GetMapping("/category")
+	public String itemGroup (Model model) {
+		model.addAttribute("url", "category");
+		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
+		model.addAttribute("itemGroups", itemGroups);
+		model.addAttribute("size", itemGroups.size());
+		return "adminItemGroup";
+	}
+	
+	@GetMapping("/category/{itemGroupId}")
+	public String detailItemGroup (Model model, @PathVariable(name = "itemGroupId") Integer itemGroupId) {
+		model.addAttribute("url", "category");
+		
+		ItemGroup itemGroup = itemService.getItemGroupById(itemGroupId);
+		model.addAttribute("currentItemGroup", itemGroup);
+		model.addAttribute("size", itemGroup.getItems().size());
+		
+		List<ItemGroup> itemGroups = itemService.getAllItemGroup();
+		model.addAttribute("itemGroups", itemGroups);
+		
+		return "detailItemGroup";
+	}
+	
+	@PostMapping("/addItemGroup")
+	public String addItemGroup (@RequestParam(name = "itemGroupName") String itemGroupName) {
+		ItemGroup itemGroup = new ItemGroup();
+		itemGroup.setName(itemGroupName);
+		itemService.insertOrUpdateItGr(itemGroup);
+		return "redirect:/admin/category";
 	}
 }

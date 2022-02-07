@@ -304,21 +304,19 @@ button.btn i.fa {
 									<tbody>
 										<c:forEach items="${orders }" var="order">
 											<tr class="value-order">
-												<td class="column-cell"><a class="anchor"
-													href="${contextPath }/">
+												<td class="column-cell"><a class="anchor">
 														<h5 class="font-medium mb-0">${order.id}</h5>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"> <span class="text-muted">${order.customer.username }</span><br>
+												<td class="column-cell"><a class="anchor-grey">
+														<span class="text-muted">${order.customer.username }</span><br>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"> <span class="text-muted">${order.totalMoney }
-															đ</span><br>
+												<td class="column-cell"><a class="anchor-grey">
+														<span class="text-muted">${order.totalMoney } đ</span><br>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"><span class="text-muted">${order.status.status }</span><br></a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"><span class="text-muted">${order.createAt}</span><br></a></td>
+												<td class="column-cell"><a class="anchor-grey"><span
+														class="text-muted">${order.status.status }</span><br></a></td>
+												<td class="column-cell"><a class="anchor-grey"><span
+														class="text-muted">${order.createAt}</span><br></a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -358,27 +356,23 @@ button.btn i.fa {
 									<tbody>
 										<c:forEach items="${userDtos }" var="userDto">
 											<tr class="value-order">
-												<td class="column-cell"><a class="anchor"
-													href="${contextPath }/purchase/order/">
+												<td class="column-cell"><a class="anchor">
 														<h5 class="font-medium mb-0">${userDto.username}</h5>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/purchase/order/"> <span
+												<td class="column-cell"><a class="anchor-grey"> <span
 														class="text-muted">${userDto.fullname }</span><br>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/purchase/order/"> <span
+												<td class="column-cell"><a class="anchor-grey"> <span
 														class="text-muted">${userDto.gender }</span><br>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/purchase/order/"><span
+												<td class="column-cell"><a class="anchor-grey"><span
 														class="text-muted">${userDto.phone }</span><br></a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/purchase/order/"> <span
-														class="text-muted">${userDto.orderQuantityByTime }</span><br></a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/purchase/order/"> <span
-														class="text-muted">${userDto.totalMoneyByTime } đ</span><br></a></td>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${userDto.orderQuantityByTime }</span><br>
+												</a></td>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${userDto.totalMoneyByTime } đ</span><br>
+												</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -417,26 +411,74 @@ button.btn i.fa {
 									<tbody>
 										<c:forEach items="${itemDtos }" var="itemDto">
 											<tr class="value-order">
-												<td class="column-cell"><a class="anchor"
-													href="${contextPath }/">
+												<td class="column-cell"><a class="anchor">
 														<h5 class="font-medium mb-0">${itemDto.itemId}</h5>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"> <span class="text-muted">${itemDto.name }</span><br>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${itemDto.name }</span><br>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"> <span class="text-muted">${itemDto.price }
-															đ</span><br>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${itemDto.price } đ</span><br>
 												</a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"><span class="text-muted">${itemDto.itemGroup }</span><br></a></td>
-												<td class="column-cell"><a class="anchor-grey"
-													href="${contextPath }/"> <span class="text-muted">${itemDto.soldQuantityByTime }</span><br></a></td>
+												<td class="column-cell"><a class="anchor-grey"><span
+														class="text-muted">${itemDto.itemGroup }</span><br></a></td>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${itemDto.soldQuantityByTime }</span><br>
+												</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>
 								</table>
 								<c:if test="${sizeItems == 0 }">
+									<div class="no-result">Không tìm thấy kết quả</div>
+								</c:if>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="row mt-3 mb-3">
+					<div class="col-md-12">
+						<div class="ca rounded shadow" style="background-color: white;">
+							<div class="card-body">
+								<h4 class="card-title text-uppercase mb-0">Doanh số theo
+									nhân viên</h4>
+							</div>
+							<div class="table-responsive">
+								<table
+									class="table table-striped table-hover no-wrap user-table mb-0">
+									<thead>
+										<tr class="title-order">
+											<th scope="col" class="border-0 text-uppercase font-medium">Mã
+												nhân viên</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Tên
+												nhân viên</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Số
+												hóa đơn</th>
+											<th scope="col" class="border-0 text-uppercase font-medium">Doanh
+												thu</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${employeeDtos }" var="employeeDto">
+											<tr class="value-order">
+												<td class="column-cell"><a class="anchor">
+														<h5 class="font-medium mb-0">${employeeDto.username}</h5>
+												</a></td>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${employeeDto.fullname }</span><br>
+												</a></td>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${employeeDto.orderQuantity }</span><br>
+												</a></td>
+												<td class="column-cell"><a class="anchor-grey"> <span
+														class="text-muted">${employeeDto.revenue } đ</span><br>
+												</a></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+								<c:if test="${sizeEmployees == 0 }">
 									<div class="no-result">Không tìm thấy kết quả</div>
 								</c:if>
 							</div>

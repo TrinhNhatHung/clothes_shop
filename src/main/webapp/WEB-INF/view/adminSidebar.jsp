@@ -145,6 +145,7 @@ i.nav-icon {
 		<c:set var="employee" value='${url == "employee" ? "active" : ""}' />
 		<c:set var="item" value='${url == "items" ? "active" : ""}' />
 		<c:set var="order" value='${url == "orders" ? "active" : ""}' />
+		<c:set var="category" value='${url == "category" ? "active" : ""}' />
 		<li class="nav-item"><a class='nav-link ${overview }'
 			href="${contextPath }/admin"><i
 				class='fas fa-th-large mr-3 nav-icon'></i>Tổng quan</a></li>
@@ -154,6 +155,9 @@ i.nav-icon {
 		<li class="nav-item"><a class="nav-link ${employee }"
 			href="${contextPath }/admin/employee"><i
 				class="fas fa-user-tie mr-3 nav-icon"></i>Nhân viên</a></li>
+		<li class="nav-item"><a class="nav-link ${category }"
+			href="${contextPath }/admin/category"><i
+				class="fas fa-vector-square mr-3 nav-icon"></i>Loại hàng</a></li>
 		<li class="nav-item"><a class="nav-link ${item }"
 			href="${contextPath }/admin/items"><i
 				class="fas fa-tshirt mr-3 nav-icon"></i>Mặt hàng</a></li>

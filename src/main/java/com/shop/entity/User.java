@@ -73,6 +73,9 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
 	private List<Order> customerOrders;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "acceptEmployee")
+	private List<Order> employeeOrders;
+
 	public User() {
 
 	}
@@ -181,6 +184,14 @@ public class User {
 
 	public void setCustomerOrders(List<Order> customerOrders) {
 		this.customerOrders = customerOrders;
+	}
+
+	public List<Order> getEmployeeOrders() {
+		return employeeOrders;
+	}
+
+	public void setEmployeeOrders(List<Order> employeeOrders) {
+		this.employeeOrders = employeeOrders;
 	}
 
 }

@@ -175,13 +175,6 @@
 
 <script>
 
-var discount = document.getElementById("span-discount");
-if(discount.innerHTML === '0%'){
-	console.log("00000000");
-	document.getElementById("div-discount").hidden = true;
-	document.getElementById("old-price").hidden = true;
-}
-
 	function setSearch() {
 		var url_string = window.location.href
 		var url = new URL(url_string);

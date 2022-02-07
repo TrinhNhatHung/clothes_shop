@@ -253,8 +253,12 @@ button.btn-search:hover {
 												<td><span class="text-muted table-row">${user.phone}</span><br></td>
 												<td><span class="text-muted table-row">${user.address}</span><br></td>
 												<td><span class="text-muted table-row">${user.enable}</span><br></td>
-												<td class="d-flex">
-													<c:if test="${user.enable }">
+												<td class="d-flex"><c:if test="${user.enable }">
+														<button type="button" title="Kích hoạt" disabled
+															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
+															onclick="showTrigger('${user.username }')">
+															<i class="fa fa-check"></i>
+														</button>
 														<button type="button" title="Cập nhật"
 															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
 															onclick="showUpdate('${user.username }')">
@@ -265,8 +269,12 @@ button.btn-search:hover {
 															onclick="showDelete('${user.username }')">
 															<i class="fa fa-trash"></i>
 														</button>
-													</c:if>
-													<c:if test="${!user.enable }">
+													</c:if> <c:if test="${!user.enable }">
+														<button type="button" title="Kích hoạt"
+															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
+															onclick="showTrigger('${user.username }')">
+															<i class="fa fa-check"></i>
+														</button>
 														<button type="button" disabled title="Cập nhật"
 															class="action-btn btn btn-outline-info btn-circle btn-lg btn-circle mr-2"
 															onclick="showUpdate('${user.username }')">
@@ -277,8 +285,7 @@ button.btn-search:hover {
 															onclick="showDelete('${user.username }')">
 															<i class="fa fa-trash"></i>
 														</button>
-													</c:if>
-												</td>
+													</c:if></td>
 											</tr>
 										</c:forEach>
 
@@ -365,6 +372,27 @@ button.btn-search:hover {
 							</div>
 						</div>
 					</div>
+					<div class="modal-shop" id="modal-trigger-${user.username}">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Kích hoạt nhân viên</h5>
+								</div>
+								<div class="modal-body">
+									<p>Bạn có muốn kích hoạt lại tài khoản nhân viên ${user.username } này không ?</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										onclick="closeTrigger('${user.username}')">Đóng</button>
+									<form:form
+										action="${contextPath }/admin/employee/trigger/${user.username }"
+										method="GET">
+										<button type="submit" class="btn btn-primary">Kích hoạt</button>
+									</form:form>
+								</div>
+							</div>
+						</div>
+					</div>
 				</c:forEach>
 				<c:if test="${param.username != null}">
 					<div class="abcde"
@@ -384,7 +412,10 @@ button.btn-search:hover {
 								<span class="fas fa-check-circle"></span>
 								<span class="msg">Xóa nhân viên thành công!</span>
 							</c:if>
-
+							<c:if test='${param.type == "trigger"}'>
+								<span class="fas fa-check-circle"></span>
+								<span class="msg">Kích hoạt nhân viên thành công!</span>
+							</c:if>
 							<div class="close-btn">
 								<span class="fas fa-times"></span>
 							</div>
@@ -425,6 +456,16 @@ button.btn-search:hover {
 	function closeUpdate(id) {
 		console.log("========= : " + id)
 		document.getElementById("modal-update-" + id).classList.remove("show");
+	}
+
+	function showTrigger(id) {
+		console.log("========= : " + id)
+		document.getElementById("modal-trigger-" + id).classList.add("show");
+	}
+
+	function closeTrigger(id) {
+		console.log("========= : " + id)
+		document.getElementById("modal-trigger-" + id).classList.remove("show");
 	}
 </script>
 </html>

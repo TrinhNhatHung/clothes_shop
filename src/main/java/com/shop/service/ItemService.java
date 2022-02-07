@@ -32,6 +32,15 @@ public class ItemService {
 	public List<ItemGroup> getAllItemGroup() {
 		return itemGroupDao.getAll(ItemGroup.class);
 	}
+	
+	public ItemGroup getItemGroupById (Integer itemGroupId) {
+		return itemGroupDao.getById(ItemGroup.class, itemGroupId);
+	}
+	
+	@Transactional
+	public void insertOrUpdateItGr(ItemGroup itemGroup) {
+		itemGroupDao.insertOrUpdate(itemGroup);
+	}
 
 	@Transactional
 	public List<Item> getItemsInPage(String sort, Integer page) {

@@ -54,6 +54,16 @@ public class CartService {
 	}
 
 	@Transactional
+	public void deleteCarts(String username, List<Integer> itemIds) {
+		for (Integer itemId : itemIds) {
+			Id id = new Id(username, itemId);
+			Cart cart = new Cart();
+			cart.setId(id);
+			cartDao.delete(cart);
+		}
+	}
+
+	@Transactional
 	public void insertOrUpdate(String username, Integer itemId, Integer quantity) {
 		Id id = new Id(username, itemId);
 		Item item = new Item();
@@ -69,15 +79,15 @@ public class CartService {
 			cartDao.insertOrUpdate(cart);
 		}
 	}
-	
+
 	@Transactional
-	public boolean addItemNotExistInCart (String username, Integer itemId) {
+	public boolean addItemNotExistInCart(String username, Integer itemId) {
 		Id id = new Id(username, itemId);
 		Cart exstingCart = cartDao.getById(Cart.class, id);
 		if (exstingCart != null) {
 			return false;
 		}
-		
+
 		Item item = new Item();
 		item.setId(itemId);
 		User user = new User();

@@ -179,7 +179,7 @@ button.action-btn i.fa {
 								<h5 class="card-title text-uppercase mb-0">Quản lý đơn hàng</h5>
 							</div>
 							<div class="table-responsive">
-								<table class="table no-wrap user-table mb-0">
+								<table class="table table-striped table-hover no-wrap user-table mb-0">
 									<thead>
 										<tr class="title-order">
 											<th scope="col"
@@ -211,7 +211,7 @@ button.action-btn i.fa {
 												<td><span class="text-muted">${item.itemGroup.name}</span><br></td>
 												<td><span class="text-muted">${item.outPrice}</span><br></td>
 												<td><span class="text-muted">${item.inPrice}</span><br></td>
-												<td><span class="text-muted">${item.discount}</span><br></td>
+												<td><span class="text-muted">${item.discount}%</span><br></td>
 												<td><span class="text-muted"> <c:forEach
 															var="itemSize" items="${item.itemSizes}">
 															<span>${itemSize.id.sizeId}(${itemSize.quantity});</span>

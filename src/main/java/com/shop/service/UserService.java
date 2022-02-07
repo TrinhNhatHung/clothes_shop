@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shop.dao.UserDao;
+import com.shop.dto.EmployeeDto;
 import com.shop.dto.UserDto;
 import com.shop.entity.Order;
 import com.shop.entity.OrderDetail;
@@ -86,8 +87,43 @@ public class UserService {
 		return userDtos;
 	}
 	
+	public List<EmployeeDto> getEmployeeOverviewInMonth (LocalDate time) {
+		int month = time.getMonthValue();
+		int year = time.getYear();
+		
+		List<User> users = userDao.getEmployeeOverviewInMonth(time);
+		List<EmployeeDto> employeeDtos = new ArrayList<>();
+		for (User user : users) {
+			EmployeeDto employeeDto = new EmployeeDto();
+			employeeDto.setFullname(user.getFullname());
+			employeeDto.setUsername(user.getUsername());
+			
+			List<Order> employeeOrders = user.getEmployeeOrders()
+											 .stream()
+											 .filter(order-> order.getCreateAt().getMonthValue() == month && order.getCreateAt().getYear() == year)
+											 .collect(Collectors.toList());
+			employeeDto.setOrderQuantity(employeeOrders.size());
+			int totalMoney = 0;
+			for (Order order : employeeOrders) {
+				List<OrderDetail> orderDetails = order.getOrderDetails();
+				for (OrderDetail orderDetail : orderDetails) {
+					totalMoney += orderDetail.getPrice() + orderDetail.getQuantity();
+				}
+			}
+			
+			employeeDto.setRevenue(totalMoney);
+			employeeDtos.add(employeeDto);
+		}
+		return employeeDtos;
+	}
+	
 	@Transactional
 	public void disableUser(String username) {
 		userDao.disableUser(username);
+	}
+	
+	@Transactional
+	public void enableUser (String username) {
+		userDao.enableUser(username);
 	}
 }

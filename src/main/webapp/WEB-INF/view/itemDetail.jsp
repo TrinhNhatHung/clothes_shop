@@ -48,6 +48,8 @@
 	href="${contextPath}/resources/assets/css/productdetail.css">
 <link rel="stylesheet"
 	href="${contextPath}/resources/assets/css/reponsive1.css">
+<link rel="stylesheet"
+	href="${contextPath}/resources/assets/css/orderList.css">
 <link rel="icon"
 	href="${contextPath}/resources/assets/img/logo/main.png"
 	type="image/x-icon" />
@@ -61,18 +63,26 @@
 
 <style>
 a.link-in-btn {
-	display: block; 
+	display: block;
 	text-align: center;
-	color : white;
-	text-decoration:  none
+	color: white;
+	text-decoration: none
 }
 
 a.link-in-btn:hover {
-	color : black
+	color: black
 }
 
 button {
-	outline :none !important
+	outline: none !important
+}
+
+.alert .msg {
+	padding: 0 48px !important;
+	font-size: 18px !important;
+	color: #1c974d !important;
+	display: flex !important;
+	margin: auto 0 !important;
 }
 </style>
 
@@ -152,7 +162,12 @@ button {
 							<a class="link-in-btn" href="${contextPath }/cart">Mua ngay</a>
 						</button>
 						<security:authorize access='hasRole("CUSTOMER")'>
-							<button class="add-cart" >Thêm vào giỏ</button>
+							<form:form action="${contextPath }/addToCart" method="POST">
+								<input type="hidden" name="itemId" value="${item.id }">
+								<input type="hidden" name="url" value="/item-detail/${item.id}">
+								<input type="hidden" name="queryString" value="null">
+								<button type="submit" class="add-cart">Thêm vào giỏ</button>
+							</form:form>
 						</security:authorize>
 					</div>
 				</div>
@@ -173,6 +188,17 @@ button {
 		</div>
 	</div>
 
+	<c:if test="${param.message != null}">
+		<div class="abcde">
+			<div class="alert show showAlert">
+				<span class="fas fa-check-circle"></span>
+					<span class="msg">Mặt hàng đã tồn tại trong giỏ hàng</span>
+				<div class="close-btn">
+					<span class="fas fa-times"></span>
+				</div>
+			</div>
+		</div>
+	</c:if>
 
 
 	<!-- FOOTER -->
@@ -180,6 +206,16 @@ button {
 </body>
 
 <script type="text/javascript">
+
+setTimeout(function () {
+    $('.alert').removeClass("show");
+    $('.alert').addClass("hide");
+}, 5000);
+
+$('.close-btn').click(function () {
+    $('.alert').removeClass("show");
+    $('.alert').addClass("hide");
+});
 
 var discount = document.getElementById("span-discount");
 if(discount.innerHTML === '0%'){

@@ -143,11 +143,12 @@ public class CartController {
 
 		try {
 			orderService.insert(order, username, itemIds);
+			cartService.deleteCarts(username, itemIds);
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 			return "redirect:/pay?error";
 		}
-		return "redirect:/pay";
+		return "redirect:/cart";
 	}
 
 }
